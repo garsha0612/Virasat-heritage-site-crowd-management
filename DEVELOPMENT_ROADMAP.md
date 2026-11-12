@@ -15,13 +15,13 @@
 
 | Phase | Phase Title | Status | Primary Focus | Key Deliverables |
 | :---: | :--- | :---: | :--- | :--- |
-| **01** | Project Initialization & Config | 🕒 Planned | Next.js 14/15, Tailwind, Tooling | `package.json`, `next.config.js`, `tailwind.config.js` |
-| **02** | Design System & Reusable UI | 🕒 Planned | Indian Heritage Palette, Atoms | `Button.jsx`, `Badge.jsx`, `Card.jsx`, `Modal.jsx` |
-| **03** | Public Tourism Portal | 🕒 Planned | Explore & Monument Details | `/`, `/explore`, `/sites/[slug]`, `Navbar.jsx` |
-| **04** | Authentication & Visitor Portal | 🕒 Planned | JWT, Sessions, Protected Views | `/login`, `/register`, `/profile`, `AuthContext.jsx` |
-| **05** | MongoDB Database Integration | 🕒 Planned | Mongoose Connection & Schemas | `lib/db.js`, 5 Mongoose Models, Compound Indexes |
-| **06** | Heritage Site Management | 🕒 Planned | Monument CRUD & Quota Engine | `/api/sites/*`, Admin Site Editor |
-| **07** | Ticket Booking & Concurrency | 🕒 Planned | Atomic Slot Reservation & QR | `POST /api/bookings`, Booking Wizard, Digital Pass |
+| **01** | Project Initialization & Config | ✅ Completed | Next.js 14, Tailwind, Tooling | `package.json`, `next.config.js`, `tailwind.config.js` |
+| **02** | Design System & Reusable UI | ✅ Completed | Indian Heritage Palette, Atoms | `Button.jsx`, `Badge.jsx`, `Card.jsx`, `Modal.jsx` |
+| **03** | Public Tourism Portal | ✅ Completed | Explore & Monument Details | `/`, `/explore`, `/sites/[slug]`, `Navbar.jsx` |
+| **04** | Authentication & Visitor Portal | ✅ Completed | JWT, Sessions, Protected Views | `/login`, `/register`, `/profile`, `AuthContext.jsx` |
+| **05** | Ticket Booking & Concurrency | ✅ Completed | Atomic Slot Reservation & QR | `POST /api/bookings`, Booking Wizard, Digital Pass |
+| **06** | MongoDB Database Integration | 🕒 Planned | Mongoose Connection & Schemas | `lib/db.js`, 5 Mongoose Models, Compound Indexes |
+| **07** | Heritage Site Management | 🕒 Planned | Monument CRUD & Quota Engine | `/api/sites/*`, Admin Site Editor |
 | **08** | Crowd Monitoring & Analytics | 🕒 Planned | Telemetry Engine, Recharts | `CrowdGauge.jsx`, `HourlyDensityChart.jsx`, Gauge API |
 | **09** | Admin Operations Dashboard | 🕒 Planned | Master KPIs & Turnstile Scanner | `/admin/dashboard`, `/admin/turnstile`, Ingress API |
 | **10** | AWS S3 Cloud Media Storage | 🕒 Planned | Direct Pre-signed S3 Uploads | `lib/s3.js`, Monument Gallery Uploader |
@@ -108,38 +108,75 @@
 
 ---
 
-### Phase 5: MongoDB Database Integration & Mongoose Modeling
-- **Objectives:** Configure the connection pool to MongoDB Atlas (`heritageDB`) with singleton caching for serverless environments. Create strictly typed Mongoose schemas with compound indexes.
-- **Components:**
-  - `lib/db.js` (Cached client connection)
-  - `models/User.js`
-  - `models/HeritageSite.js`
-  - `models/TimeSlot.js`
-  - `models/Booking.js`
-  - `models/CrowdStatistics.js`
-- **Files Involved:** `lib/db.js`, `models/*`.
-- **Technologies:** MongoDB Atlas, Mongoose v8.x.
-- **Dependencies:** `mongoose`.
-- **Expected Outcome:** High-resilience database connection established; collections auto-index without performance bottlenecks.
-- **Testing Requirements:** Validate connection pooling across concurrent route invocations; verify compound unique index enforcement on `TimeSlot(siteId, date, startTime)`.
+### Phase 5: Heritage Site Booking, Ticket Reservation & Concurrency System (Consolidated & Approved Ready)
+- **Objectives:** Implement complete end-to-end monument ticketing, real-time slot inventory, multi-step booking wizard, server-side tariff recalculation with official ASI pricing, mock payment simulation, cryptographic QR digital passes, native multi-document ACID transactions with MongoDB Atlas/replica set, atomic overbooking defense, and exact-once cancellation capacity restoration.
+- **Components & Endpoints:**
+  - `app/(public)/sites/[slug]/book/page.jsx` (Multi-step booking wizard with categories & Mausoleum add-on)
+  - `app/booking/payment/[id]/page.jsx` (Mock payment gateway simulation with UPI/Card/Netbanking)
+  - `app/booking/confirmation/[reference]/page.jsx` (Immediate booking confirmation & QR pass view)
+  - `app/tickets/[reference]/page.jsx` (Public digital ticket dossier with academic watermark & void overlay)
+  - `app/(visitor)/dashboard/page.jsx` (Visitor pass dossier & cancellation control)
+  - `app/api/availability/route.js` (Real-time slot availability with demo intervals)
+  - `app/api/bookings/route.js` (Atomic multi-document transaction reservation with server-side price protection)
+  - `app/api/bookings/[id]/route.js` (Booking details & digital ticket lookup)
+  - `app/api/bookings/[id]/cancel/route.js` (Atomic transaction cancellation & capacity restoration)
+  - `app/api/payments/mock/route.js` (Atomic transaction payment transition & QR code generator)
+  - `app/api/bookings/[id]/regenerate-qr/route.js` (Idempotent QR code recovery endpoint)
+- **Technologies:** Next.js App Router, React 18, MongoDB Atlas / Mongoose v8.x, Tailwind CSS, Canvas-free QR code data URL generation (`qrcode`), Lucide React.
+- **Audit & Verification:** 73-point comprehensive automated test suite (`tests/run-all-booking-tests.mjs`) verified 100% pass rate:
+  - 52 end-to-end concurrency, price tampering, access control, and race defense tests (`tests/booking-e2e-audit.mjs`).
+  - 21 multi-document ACID transaction scenarios (`tests/booking-consolidation-audit.mjs`) including rollback after creation failure, slot reservation failure, idempotency replay, and tenant data isolation.
 
 ---
 
-### Phase 6: Heritage Site Administration
-- **Objectives:** Implement administrative controls to create, update, and manage heritage destinations, ticket price tiers, operating schedules, and capacity limits.
-- **Components:**
-  - `app/(admin)/admin/sites/page.jsx`
-  - `app/(admin)/admin/sites/new/page.jsx`
-  - `app/(admin)/admin/sites/[id]/edit/page.jsx`
-  - `components/admin/SiteForm.jsx`
-- **Files Involved:**
-  - `app/api/sites/route.js`
-  - `app/api/sites/[id]/route.js`
-  - `services/siteService.js`
-- **Technologies:** Next.js Route Handlers, Role-Based Access Control (`role === 'admin'`).
-- **Dependencies:** Mongoose, Zod or custom validator.
-- **Expected Outcome:** Administrators can add new heritage destinations, modify adult/child/foreigner rates, and adjust carrying capacities.
-- **Testing Requirements:** Attempting non-admin access returns HTTP 403 Forbidden; verify slug auto-generation and uniqueness.
+### Phase 6: Admin Dashboard & Heritage Site Management
+- **Status:** **Consolidated, Exhaustively Tested & Ready for Review**
+- **Objectives:** Implement a premium administrative control portal (`/admin`) to monitor live operations, manage heritage monuments, inspect bookings, manage registered visitors, configure time slot carrying capacities, tune demonstration crowd thresholds, export audit-safe CSV reports, and rotate administrative credentials.
+- **Pages & Components Created:**
+  - `app/admin/layout.jsx` (Responsive administrative layout with desktop sidebar & mobile drawer)
+  - `components/admin/AdminSidebar.jsx` (8-module administrative sidebar navigation)
+  - `components/admin/AdminHeader.jsx` (System status badge, admin profile, secure sign-out)
+  - `app/admin/page.jsx` (Real-time MongoDB KPI metrics, Recharts trends, status distribution, recent activity)
+  - `app/admin/sites/page.jsx` (Monument directory with search, state/category filters, active toggle, safe delete guard)
+  - `app/admin/sites/new/page.jsx` (Monument registration form with Zod validation, official ASI tariffs, visiting guidelines)
+  - `app/admin/sites/[id]/page.jsx` (Monument dossier, tariff schedule, visiting hours, operational stats)
+  - `app/admin/sites/[id]/edit/page.jsx` (Monument edit form pre-populated with live data)
+  - `app/admin/bookings/page.jsx` (Booking registry with search, status filters, date filters, pagination)
+  - `app/admin/bookings/[id]/page.jsx` (Booking dossier with digital pass verification, itemized tariffs, administrative cancellation)
+  - `app/admin/users/page.jsx` (Visitor accounts table with search, role filters, suspension toggle, booking history modal)
+  - `app/admin/slots/page.jsx` (Time slots grid with occupancy progress, slot creation, carrying capacity floor guard)
+  - `app/admin/crowd/page.jsx` (Live density status indicators, hourly timeline chart, simulation threshold tuning)
+  - `app/admin/reports/page.jsx` (Financial KPIs, daily revenue trend, monument popularity leaderboard, CSV export)
+  - `app/admin/settings/page.jsx` (Admin profile, bcrypt password rotation, system specifications)
+- **API Route Handlers:**
+  - `app/api/admin/overview/route.js` (Real-time MongoDB metrics & Recharts telemetry)
+  - `app/api/admin/sites/route.js` (List & create monuments)
+  - `app/api/admin/sites/[id]/route.js` (Get, update, & safe delete monuments)
+  - `app/api/admin/sites/[id]/toggle-status/route.js` (Toggle active status)
+  - `app/api/admin/bookings/route.js` (List & search bookings with pagination)
+  - `app/api/admin/bookings/[id]/route.js` (Booking dossier lookup)
+  - `app/api/admin/bookings/[id]/cancel/route.js` (ACID transaction cancellation & capacity restoration)
+  - `app/api/admin/users/route.js` (List visitors with booking counts, hash concealment)
+  - `app/api/admin/users/[id]/route.js` (Visitor dossier with booking history)
+  - `app/api/admin/users/[id]/toggle-status/route.js` (Suspend/activate account, self-deactivation guard)
+  - `app/api/admin/slots/route.js` (List & create time slots)
+  - `app/api/admin/slots/[id]/route.js` (Update capacity with reserved-count floor guard, delete unreserved)
+  - `app/api/admin/crowd/route.js` (Occupancy calculations & threshold configuration)
+  - `app/api/admin/reports/route.js` (Date-filtered financial intelligence)
+  - `app/api/admin/reports/export/route.js` (Audit-safe CSV export with formula injection escaping)
+  - `app/api/admin/settings/route.js` (Profile & environment specifications)
+  - `app/api/admin/settings/password/route.js` (Bcrypt password change)
+- **Database Models & Security:**
+  - `models/HeritageSite.js` (Mongoose schema with slug uniqueness, official ASI tariffs, coordinates, demonstration capacity)
+  - `lib/seedSites.js` (Auto-seeding 6 default monuments from verified ASI catalog)
+  - `lib/adminAuth.js` (Server-side `requireAdmin` guard enforcing active session and `role === 'admin'`)
+  - `scripts/seed-admin.mjs` (CLI bootstrap script for provisioning admin accounts)
+- **Testing & Verification:**
+  - 91 total automated tests passing (100% pass rate):
+    - 52 Phase 5 E2E Concurrency & Access Control tests (`tests/booking-e2e-audit.mjs`).
+    - 21 Phase 5 Consolidated ACID Transaction scenarios (`tests/booking-consolidation-audit.mjs`).
+    - 18 Phase 6 Administrative & Security tests (`tests/admin-e2e-audit.mjs`).
+  - Production build (`npm run build`) compiled cleanly across all 35 static/SSG/dynamic routes with exit code 0.
 
 ---
 

@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Indian Heritage Design System Palette
+        // ANVAYA Indian Heritage Design System Palette
         heritage: {
           ivory: {
             DEFAULT: '#FDFBF7',
@@ -17,7 +17,7 @@ module.exports = {
             100: '#FDFBF7',
             200: '#F7F3EB',
             300: '#EFE9DC',
-            400: '#E5DCStyle',
+            400: '#E5DCCB',
           },
           sandstone: {
             DEFAULT: '#D4A373',
@@ -29,6 +29,7 @@ module.exports = {
             500: '#C58C54',
             600: '#A97039',
             700: '#875629',
+            800: '#643F1C',
           },
           green: {
             DEFAULT: '#1B4332',
@@ -53,6 +54,7 @@ module.exports = {
             500: '#C5A059',
             600: '#A6823B',
             700: '#7F6229',
+            800: '#5A451B',
           },
           charcoal: {
             DEFAULT: '#212529',
@@ -68,45 +70,54 @@ module.exports = {
             900: '#121416',
           },
         },
-        // Crowd Level Indicator System Colors
+        // Configurable Crowd Level Indicator Colors
         crowd: {
           low: {
+            DEFAULT: '#10B981',
             bg: '#ECFDF5',
             text: '#065F46',
             border: '#A7F3D0',
-            badge: '#10B981',
           },
           moderate: {
+            DEFAULT: '#F59E0B',
             bg: '#FFFBEB',
             text: '#92400E',
             border: '#FDE68A',
-            badge: '#F59E0B',
           },
           high: {
+            DEFAULT: '#EF4444',
             bg: '#FEF2F2',
             text: '#991B1B',
             border: '#FECACA',
-            badge: '#EF4444',
           },
         },
       },
       fontFamily: {
-        serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+        serif: ['var(--font-playfair)', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
         sans: [
+          'var(--font-inter)',
           'system-ui',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',
           'Roboto',
-          'Helvetica',
-          'Arial',
           'sans-serif',
         ],
       },
       boxShadow: {
-        'heritage-sm': '0 1px 3px rgba(33, 37, 41, 0.05), 0 1px 2px rgba(212, 163, 115, 0.1)',
-        'heritage-md': '0 4px 6px -1px rgba(33, 37, 41, 0.07), 0 2px 4px -1px rgba(212, 163, 115, 0.06)',
-        'heritage-lg': '0 10px 15px -3px rgba(33, 37, 41, 0.08), 0 4px 6px -2px rgba(212, 163, 115, 0.05)',
+        'heritage-subtle': '0 1px 2px rgba(33, 37, 41, 0.04)',
+        'heritage-sm': '0 1px 3px rgba(33, 37, 41, 0.06), 0 1px 2px rgba(212, 163, 115, 0.08)',
+        'heritage-md': '0 4px 12px -2px rgba(33, 37, 41, 0.08), 0 2px 6px -1px rgba(212, 163, 115, 0.06)',
+        'heritage-lg': '0 12px 24px -4px rgba(33, 37, 41, 0.1), 0 4px 8px -2px rgba(212, 163, 115, 0.04)',
+      },
+      borderRadius: {
+        'heritage-sm': '4px',
+        'heritage': '8px',
+        'heritage-md': '12px',
+        'heritage-lg': '16px',
+      },
+      maxWidth: {
+        'heritage-container': '1280px',
       },
     },
   },

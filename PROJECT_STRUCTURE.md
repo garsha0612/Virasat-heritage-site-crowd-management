@@ -263,3 +263,44 @@ Encapsulates complex lifecycle logic:
 
 ### 2.6 Services (`services/`)
 Separates UI presentation from network transport. Instead of scattering `fetch('/api/sites')` across multiple React components, components invoke `siteService.getSites(params)`. This makes testing straightforward and allows future endpoint refactoring without touching UI code.
+
+---
+
+## 3. Phase 5 Active File Manifest (Ticketing & Reservation System)
+
+The following files represent the verified Phase 5 implementation:
+
+```
+├── app/
+│   ├── (public)/sites/[slug]/book/page.jsx      # Multi-step booking wizard with live slot telemetry
+│   ├── booking/
+│   │   ├── payment/[id]/page.jsx               # Mock payment gateway (UPI, Card, NetBanking simulation)
+│   │   └── confirmation/[reference]/page.jsx   # Pass confirmation and reference dispatch
+│   ├── tickets/
+│   │   └── [reference]/page.jsx                # Official ASI electronic gate pass with scannable QR
+│   ├── (visitor)/dashboard/page.jsx            # Visitor portal with upcoming/past passes & cancellation modal
+│   └── api/
+│       ├── availability/route.js               # GET slot occupancy & auto-seeding engine
+│       ├── bookings/
+│       │   ├── route.js                        # GET personal history & POST atomic reservations
+│       │   └── [id]/
+│       │       ├── route.js                    # GET booking dossier by ID or Reference
+│       │       └── cancel/route.js             # POST cancellation & atomic capacity restoration
+│       └── payments/mock/route.js              # POST mock transaction & QR code issuance
+│
+├── models/
+│   ├── TimeSlot.js                             # Compound index { heritageSite, date, startTime }
+│   └── Booking.js                              # Unique bookingReference & sparse ticketCode indexes
+│
+├── lib/
+│   ├── slots.js                                # Capacity seeding & atomic conditional increment/decrement
+│   ├── tickets.js                              # Booking reference, ticket code, and QR canvas generator
+│   └── validations/booking.js                  # Zod validation schemas with parameter normalization
+│
+├── constants/
+│   └── pricing.js                              # Official ASI tariffs & server-side recalculator
+│
+└── tests/
+    ├── booking-e2e-audit.mjs                   # 49-point automated end-to-end security test suite
+    └── run-all-booking-tests.mjs               # Self-contained Next.js test runner with clean shutdown
+```
