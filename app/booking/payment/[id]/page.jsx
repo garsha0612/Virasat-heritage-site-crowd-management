@@ -264,25 +264,14 @@ export default function PaymentPage({ params }) {
                   </div>
                 </div>
 
-                {/* Sandbox test mode notice */}
-                <div className="mt-6 p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-3">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-                    <div className="text-xs text-amber-900 font-sans space-y-2 leading-relaxed">
-                      <p className="font-bold text-amber-900">🧪 CASHFREE SANDBOX TEST ENVIRONMENT</p>
-                      <p>
-                        This is an official <strong>Cashfree Sandbox test environment</strong>. Real bank accounts will <strong>never</strong> be charged.
-                      </p>
-                      <div className="mt-3 p-3 bg-white/80 rounded-lg border border-amber-200">
-                        <p className="font-bold text-amber-900 mb-2">Cashfree Sandbox Test Credentials:</p>
-                        <div className="space-y-1 font-mono text-[11px]">
-                          <p>Test Card: <strong>4838 3056 1046 0100</strong> (or 4706 1312 1121 2123)</p>
-                          <p>Expiry: <strong>06/2030</strong> | CVV: <strong>123</strong></p>
-                          <p>OTP Simulation: <strong>111000</strong></p>
-                          <p>Test UPI: <strong>testsuccess@gocash</strong></p>
-                        </div>
-                      </div>
-                    </div>
+                {/* Secure Gateway Assurance */}
+                <div className="mt-6 p-4 rounded-2xl bg-heritage-ivory/80 border border-heritage-sandstone/30 flex items-start gap-3">
+                  <ShieldCheck className="w-5 h-5 text-heritage-green shrink-0 mt-0.5" />
+                  <div className="text-xs text-heritage-charcoal-600 font-sans space-y-1">
+                    <p className="font-bold text-heritage-charcoal">Bank-Grade Payment Security</p>
+                    <p>
+                      Transactions are processed securely via Cashfree Payment Gateway with end-to-end 256-bit SSL encryption.
+                    </p>
                   </div>
                 </div>
 
@@ -347,12 +336,12 @@ export default function PaymentPage({ params }) {
                   
                   {!cashfreeLoaded && (
                     <p className="text-[11px] text-heritage-charcoal-400 font-sans text-center">
-                      Connecting to Cashfree Sandbox...
+                      Connecting to secure payment gateway...
                     </p>
                   )}
 
                   <p className="text-[11px] text-heritage-charcoal-400 font-sans text-center">
-                    Secured by Cashfree Payments (Sandbox) • 256-bit SSL Encryption
+                    Secured by Cashfree Payments • 256-bit SSL Encryption
                   </p>
                 </div>
               </div>

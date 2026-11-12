@@ -45,6 +45,15 @@ export default function VisitorDashboard() {
   const [cancelError, setCancelError] = useState('');
   const [cancelSuccessMsg, setCancelSuccessMsg] = useState('');
 
+  // Refund Modal State
+  const [isRefundModalOpen, setIsRefundModalOpen] = useState(false);
+  const [selectedRefundBooking, setSelectedRefundBooking] = useState(null);
+  const [refundReason, setRefundReason] = useState('Personal emergency or illness');
+  const [refundDetails, setRefundDetails] = useState('');
+  const [submittingRefund, setSubmittingRefund] = useState(false);
+  const [refundError, setRefundError] = useState('');
+  const [refundSuccessMsg, setRefundSuccessMsg] = useState('');
+
   // Fetch bookings whenever user is verified
   const fetchBookings = async () => {
     try {
@@ -124,6 +133,63 @@ export default function VisitorDashboard() {
     }
   };
 
+  // Open Refund Modal
+  const openRefundModal = (booking) => {
+    setSelectedRefundBooking(booking);
+    setRefundReason('Personal emergency or illness');
+    setRefundDetails('');
+    setRefundError('');
+    setIsRefundModalOpen(true);
+  };
+
+  // Submit Refund Request
+  const handleConfirmRefundRequest = async () => {
+    if (!selectedRefundBooking) return;
+    try {
+      setSubmittingRefund(true);
+      setRefundError('');
+      const res = await fetch(`/api/bookings/${selectedRefundBooking.id}/refund-request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reason: refundReason,
+          supportingDetails: refundDetails,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setBookings((prev) =>
+          prev.map((b) =>
+            b.id === selectedRefundBooking.id
+              ? {
+                  ...b,
+                  bookingStatus: 'cancelled',
+                  refund: {
+                    status: 'REQUESTED',
+                    refundId: data.data.refundId,
+                    requestedAt: new Date().toISOString(),
+                    reason: refundReason,
+                    requestedAmount: selectedRefundBooking.totalAmount,
+                  },
+                }
+              : b
+          )
+        );
+        setIsRefundModalOpen(false);
+        setRefundSuccessMsg(
+          `Refund request ${data.data.refundId} submitted successfully. An administrator will review your request.`
+        );
+        setTimeout(() => setRefundSuccessMsg(''), 8000);
+      } else {
+        setRefundError(data.message || 'Failed to submit refund request.');
+      }
+    } catch (err) {
+      setRefundError('Network error submitting refund request.');
+    } finally {
+      setSubmittingRefund(false);
+    }
+  };
+
   if (authLoading) {
     return (
       <div className="py-12 sm:py-16">
@@ -156,8 +222,16 @@ export default function VisitorDashboard() {
   const pastOrCancelledBookings = bookings.filter(
     (b) => b.visitDate < todayStr || b.bookingStatus === 'cancelled'
   );
+  const refundBookings = bookings.filter(
+    (b) => b.refund?.status && b.refund.status !== 'NOT_REQUESTED'
+  );
 
-  const displayedBookings = activeTab === 'upcoming' ? upcomingBookings : pastOrCancelledBookings;
+  const displayedBookings =
+    activeTab === 'upcoming'
+      ? upcomingBookings
+      : activeTab === 'past'
+      ? pastOrCancelledBookings
+      : refundBookings;
 
   return (
     <div className="py-10 sm:py-16 bg-heritage-ivory min-h-[calc(100vh-160px)]">
@@ -293,6 +367,12 @@ export default function VisitorDashboard() {
             <span>{cancelSuccessMsg}</span>
           </div>
         )}
+        {refundSuccessMsg && (
+          <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-amber-700 shrink-0" />
+            <span>{refundSuccessMsg}</span>
+          </div>
+        )}
 
         {/* Booking History Section */}
         <div className="bg-white rounded-3xl border border-heritage-sandstone/30 shadow-heritage-sm p-6 sm:p-10">
@@ -363,6 +443,27 @@ export default function VisitorDashboard() {
                 }`}
               >
                 {pastOrCancelledBookings.length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('refunds')}
+              className={`pb-3 text-xs font-semibold font-sans tracking-wide transition-colors relative flex items-center gap-2 ${
+                activeTab === 'refunds'
+                  ? 'text-heritage-green border-b-2 border-heritage-green'
+                  : 'text-heritage-charcoal-500 hover:text-heritage-charcoal'
+              }`}
+            >
+              <span>Refund Requests</span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  activeTab === 'refunds'
+                    ? 'bg-amber-100 text-amber-800'
+                    : 'bg-heritage-sandstone-100 text-heritage-charcoal-500'
+                }`}
+              >
+                {refundBookings.length}
               </span>
             </button>
           </div>
@@ -467,12 +568,34 @@ export default function VisitorDashboard() {
                             </span>
                           </div>
 
-                          {/* Cancellation Note */}
-                          {isCancelled && b.cancellation && (
+                          {/* Refund & Cancellation Status Alert */}
+                          {b.refund?.status && b.refund.status !== 'NOT_REQUESTED' ? (
+                            <div className="mt-2.5 p-3 rounded-xl border text-[11px] font-sans flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-heritage-ivory/60 border-heritage-sandstone/30">
+                              <div>
+                                <div className="flex items-center gap-1.5 font-bold text-heritage-charcoal">
+                                  <RotateCcw className="w-3.5 h-3.5 text-heritage-green shrink-0" />
+                                  <span>Refund Request: {b.refund.refundId || 'In Progress'}</span>
+                                </div>
+                                <p className="text-heritage-charcoal-500 mt-0.5">
+                                  Reason: "{b.refund.reason}"
+                                  {b.refund.adminNote && ` — Note: ${b.refund.adminNote}`}
+                                </p>
+                              </div>
+                              <div className="shrink-0 flex items-center gap-2">
+                                {b.refund.status === 'REQUESTED' && <Badge variant="warning">Under Review</Badge>}
+                                {b.refund.status === 'UNDER_REVIEW' && <Badge variant="info">Under Review</Badge>}
+                                {b.refund.status === 'APPROVED' && <Badge variant="primary">Approved (Queued)</Badge>}
+                                {b.refund.status === 'PROCESSING' && <Badge variant="info">Processing via Gateway</Badge>}
+                                {b.refund.status === 'REFUNDED' && <Badge variant="success">Refunded (₹{b.refund.approvedAmount || b.totalAmount})</Badge>}
+                                {b.refund.status === 'REJECTED' && <Badge variant="danger">Rejected</Badge>}
+                                {b.refund.status === 'FAILED' && <Badge variant="danger">Gateway Failed</Badge>}
+                              </div>
+                            </div>
+                          ) : isCancelled && b.cancellation ? (
                             <p className="text-[11px] text-red-700 bg-red-50/60 px-3 py-1.5 rounded-lg border border-red-100 mt-2">
-                              Cancelled on {new Date(b.cancellation.cancelledAt).toLocaleDateString('en-IN')}: {b.cancellation.reason}. Refund processed.
+                              Cancelled on {new Date(b.cancellation.cancelledAt).toLocaleDateString('en-IN')}: {b.cancellation.reason}.
                             </p>
-                          )}
+                          ) : null}
                         </div>
 
                         {/* Right: Tariff & Action CTAs */}
@@ -530,6 +653,20 @@ export default function VisitorDashboard() {
                                 </Button>
                               </>
                             )}
+
+                            {/* Request Refund Action for eligible bookings */}
+                            {(b.paymentStatus === 'completed' || b.paymentStatus === 'paid') &&
+                              (!b.refund?.status || ['NOT_REQUESTED', 'FAILED'].includes(b.refund.status)) && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => openRefundModal(b)}
+                                  leftIcon={RotateCcw}
+                                  className="text-amber-800 border-amber-300 hover:bg-amber-50"
+                                >
+                                  Request Refund
+                                </Button>
+                              )}
 
                             {isCancelled && (
                               <Button
@@ -592,7 +729,7 @@ export default function VisitorDashboard() {
                 </span>
               </div>
               <div className="flex justify-between pt-2 border-t border-heritage-sandstone/20">
-                <span className="text-heritage-charcoal-500">Refund Amount:</span>
+                <span className="text-heritage-charcoal-500">Total Tariff:</span>
                 <strong className="text-heritage-green font-mono text-sm">
                   ₹{selectedBooking.totalAmount}
                 </strong>
@@ -634,6 +771,105 @@ export default function VisitorDashboard() {
                 className="bg-red-700 hover:bg-red-800 text-white border-red-700"
               >
                 {cancelling ? 'Processing...' : 'Confirm Cancellation'}
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Request Refund Modal */}
+      <Modal
+        isOpen={isRefundModalOpen}
+        onClose={() => !submittingRefund && setIsRefundModalOpen(false)}
+        title="Request Monument Pass Refund"
+        description="All refunds are submitted for administrative review and verified against monument entry records before genuine Cashfree gateway settlement."
+      >
+        {selectedRefundBooking && (
+          <div className="space-y-4 text-xs font-sans">
+            {refundError && (
+              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 font-semibold">
+                {refundError}
+              </div>
+            )}
+
+            <div className="bg-heritage-ivory p-4 rounded-xl border border-heritage-sandstone/30 space-y-2">
+              <div className="flex justify-between">
+                <span className="text-heritage-charcoal-500">Monument:</span>
+                <strong className="text-heritage-charcoal">{selectedRefundBooking.siteName}</strong>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-heritage-charcoal-500">Booking Reference:</span>
+                <span className="font-mono font-bold text-heritage-green">
+                  {selectedRefundBooking.bookingReference}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-heritage-charcoal-500">Visit Date:</span>
+                <span className="font-semibold text-heritage-charcoal">
+                  {selectedRefundBooking.visitDate}
+                </span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-heritage-sandstone/20">
+                <span className="text-heritage-charcoal-500">Eligible Refund Amount:</span>
+                <strong className="text-heritage-green font-mono text-sm">
+                  ₹{selectedRefundBooking.totalAmount}
+                </strong>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-heritage-charcoal-600 uppercase tracking-wider mb-1.5">
+                Reason for Refund Request *
+              </label>
+              <select
+                value={refundReason}
+                onChange={(e) => setRefundReason(e.target.value)}
+                disabled={submittingRefund}
+                className="w-full px-3 py-2 text-xs rounded-xl border border-heritage-sandstone/40 bg-white focus:outline-none focus:ring-2 focus:ring-heritage-sandstone text-heritage-charcoal"
+              >
+                <option value="Personal emergency or illness">Personal emergency or illness</option>
+                <option value="Travel cancellation or reschedule">Travel cancellation or reschedule</option>
+                <option value="Accidental duplicate reservation">Accidental duplicate reservation</option>
+                <option value="Monument closure or severe weather">Monument closure or severe weather</option>
+                <option value="Other valid justification">Other valid justification</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-heritage-charcoal-600 uppercase tracking-wider mb-1.5">
+                Supporting Details (Optional)
+              </label>
+              <textarea
+                value={refundDetails}
+                onChange={(e) => setRefundDetails(e.target.value)}
+                placeholder="Provide additional context for the administrator to verify..."
+                rows={3}
+                disabled={submittingRefund}
+                className="w-full px-3 py-2 text-xs rounded-xl border border-heritage-sandstone/40 bg-white focus:outline-none focus:ring-2 focus:ring-heritage-sandstone text-heritage-charcoal"
+              />
+            </div>
+
+            <p className="text-[11px] text-heritage-charcoal-400 italic">
+              * Note: Submitting a refund request will cancel the entry pass and return the reserved time-slot to public quota. Upon administrator approval, the funds will be credited to your original payment method via Cashfree.
+            </p>
+
+            <div className="pt-4 flex items-center justify-end gap-3 border-t border-heritage-sandstone/15">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsRefundModalOpen(false)}
+                disabled={submittingRefund}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleConfirmRefundRequest}
+                isLoading={submittingRefund}
+                className="bg-amber-800 hover:bg-amber-900 text-white border-amber-800"
+              >
+                {submittingRefund ? 'Submitting...' : 'Submit Refund Request'}
               </Button>
             </div>
           </div>

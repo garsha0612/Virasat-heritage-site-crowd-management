@@ -16,6 +16,7 @@ import {
   X,
   ExternalLink,
   LogOut,
+  RotateCcw,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -26,6 +27,7 @@ export const ADMIN_NAV_SECTIONS = [
       { href: '/admin', label: 'Admin Overview', icon: LayoutDashboard, exact: true },
       { href: '/admin/sites', label: 'Destinations (Sites)', icon: Landmark },
       { href: '/admin/bookings', label: 'Bookings & Passes', icon: Ticket },
+      { href: '/admin/refunds', label: 'Refund Management', icon: RotateCcw },
       { href: '/admin/slots', label: 'Time Slots & Quota', icon: Clock },
       { href: '/admin/crowd', label: 'Crowd Telemetry', icon: Activity },
     ],

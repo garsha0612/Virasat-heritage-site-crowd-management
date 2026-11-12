@@ -83,8 +83,77 @@ export async function POST(request) {
 
     console.log(`📨 Validated Cashfree webhook [${eventType}] received for Order ID: ${order.orderId}`);
 
-    // 5. Locate matching booking in database
     await connectToDatabase();
+
+    // Handle Refund Webhook Events
+    if (eventType && (eventType.includes('REFUND') || payload?.type?.includes('REFUND'))) {
+      const refundData = payload?.data?.refund || payload?.data;
+      const cfRefundId = refundData?.cf_refund_id;
+      const refundId = refundData?.refund_id;
+      const refundStatus = (refundData?.refund_status || '').toUpperCase();
+
+      if (refundId || cfRefundId) {
+        const Refund = (await import('@/models/Refund')).default;
+        const refundDoc = await Refund.findOne({
+          $or: [
+            ...(refundId ? [{ refundId }] : []),
+            ...(cfRefundId ? [{ 'gateway.cashfreeRefundId': cfRefundId }, { 'gateway.cfRefundId': cfRefundId }] : []),
+          ],
+        });
+
+        if (refundDoc) {
+          if (refundStatus === 'SUCCESS') {
+            refundDoc.status = 'REFUNDED';
+            refundDoc.gateway.gatewayStatus = 'SUCCESS';
+            refundDoc.gateway.processedAt = new Date();
+            refundDoc.auditLog.push({
+              action: 'GATEWAY_CONFIRMED',
+              actorName: 'Cashfree Webhook',
+              actorRole: 'system',
+              note: `Webhook verified refund settlement. CF Refund ID: ${cfRefundId || refundId}`,
+            });
+            await refundDoc.save();
+
+            await Booking.findByIdAndUpdate(refundDoc.booking, {
+              $set: {
+                paymentStatus: 'refunded',
+                'refund.status': 'REFUNDED',
+                'refund.processedAt': new Date(),
+                'cancellation.refundStatus': 'refund_processed',
+              },
+            });
+            console.log(`✅ Webhook confirmed refund for ${refundDoc.refundId}`);
+          } else if (refundStatus === 'FAILED') {
+            refundDoc.status = 'FAILED';
+            refundDoc.gateway.gatewayStatus = 'FAILED';
+            refundDoc.gateway.failureReason = refundData?.refund_failure_reason || 'Gateway reported refund failure';
+            refundDoc.auditLog.push({
+              action: 'GATEWAY_FAILED',
+              actorName: 'Cashfree Webhook',
+              actorRole: 'system',
+              note: `Webhook reported refund failed: ${refundDoc.gateway.failureReason}`,
+            });
+            await refundDoc.save();
+
+            await Booking.findByIdAndUpdate(refundDoc.booking, {
+              $set: {
+                'refund.status': 'FAILED',
+                'refund.failureReason': refundDoc.gateway.failureReason,
+                'cancellation.refundStatus': 'refund_failed',
+              },
+            });
+            console.log(`❌ Webhook recorded refund failure for ${refundDoc.refundId}`);
+          }
+
+          return NextResponse.json(
+            { success: true, message: `Refund notification [${refundStatus}] processed successfully.` },
+            { status: 200 }
+          );
+        }
+      }
+    }
+
+    // 5. Locate matching booking in database
 
     const booking = await Booking.findOne({
       $or: [

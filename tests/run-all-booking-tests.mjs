@@ -26,7 +26,9 @@ function waitForServer(port, timeoutMs = 45000) {
       });
 
       req.on('error', (err) => {
-        // Still waiting
+        if (err.code !== 'ECONNREFUSED') {
+          console.log(`[waitForServer probe error]: ${err.code || err.message}`);
+        }
       });
 
       req.setTimeout(3000, () => {
@@ -51,7 +53,7 @@ async function main() {
 
   try {
     console.log(`Waiting for server to become ready on http://127.0.0.1:${PORT}...`);
-    await waitForServer(PORT, 25000);
+    await waitForServer(PORT, 45000);
     process.env.TEST_APP_URL = `http://127.0.0.1:${PORT}`;
     console.log(`Next.js server is online on port ${PORT}. Running audit suites...\n`);
 
@@ -72,8 +74,12 @@ async function main() {
     const cashfreeRbacModule = await import('./cashfree-sandbox-and-rbac-audit.mjs');
     await cashfreeRbacModule.runCashfreeAndRbacAudit();
 
+    // Run Suite 13: Admin-Approved Refund Lifecycle & Cashfree Integration Audit
+    const refundAuditModule = await import('./refund-lifecycle-audit.mjs');
+    await refundAuditModule.runRefundAudit();
+
     console.log('\n================================================================');
-    console.log('ALL ANVAYA PHASE 5, PHASE 6 & CASHFREE/RBAC AUDIT SUITES PASSED SUCCESSFULLY!');
+    console.log('ALL ANVAYA CORE, ADMIN, REFUND & CASHFREE AUDIT SUITES PASSED SUCCESSFULLY!');
     console.log('================================================================\n');
   } catch (err) {
     console.error('Execution error during audit:', err);

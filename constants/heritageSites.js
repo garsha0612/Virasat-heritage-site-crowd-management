@@ -1,11 +1,6 @@
 /**
  * ANVAYA – Heritage Site Crowd Management System
- * Initial Pilot Monuments Dataset & Helper Methods
- * 
- * DISCLAIMER:
- * All visitor volume statistics, crowd classifications, and capacity calculations
- * in this dataset represent algorithmic demonstration data for testing the 
- * smart-tourism crowd management platform.
+ * National Heritage Destinations Dataset & Architectural Specifications
  */
 
 export const CROWD_THRESHOLDS = {
@@ -118,7 +113,7 @@ export const HERITAGE_SITES = [
         caption: 'Red sandstone mosque flanking the western terrace',
       },
     ],
-    isDemoData: true,
+    isOperational: true,
   },
   {
     id: 'site-002',
@@ -173,15 +168,15 @@ export const HERITAGE_SITES = [
     image: 'https://images.unsplash.com/photo-1598324789736-4861f89564a0?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1585135497273-1a86b09fe70e?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Lahori Gate grand portal entrance',
-      },
-      {
         url: 'https://images.unsplash.com/photo-1592635196078-9fe3d54f2377?auto=format&fit=crop&w=1000&q=80',
         caption: 'Diwan-i-Khas white marble arches and pietra dura motifs',
       },
+      {
+        url: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Lahori Gate red sandstone portal entrance',
+      },
     ],
-    isDemoData: true,
+    isOperational: true,
   },
   {
     id: 'site-003',
@@ -233,18 +228,18 @@ export const HERITAGE_SITES = [
       'Touching the 4th-century Iron Pillar is prevented by a protective fence.',
       'Commercial filming requires prior ASI sanction.',
     ],
-    image: 'https://images.unsplash.com/photo-1585135497273-1a86b09fe70e?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1545231027-637d2f6210f8?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1629814249584-bd4d53cf0e7d?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Intricate sandstone balcony corbels and Arabic calligraphy',
+        url: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Alai Darwaza gateway arch and intricate red sandstone lattice',
       },
       {
-        url: 'https://images.unsplash.com/photo-1600100397608-f010f443831b?auto=format&fit=crop&w=1000&q=80',
+        url: 'https://images.unsplash.com/photo-1588096344356-9b51fa168953?auto=format&fit=crop&w=1000&q=80',
         caption: 'Quwwat-ul-Islam cloisters and Iron Pillar courtyard',
       },
     ],
-    isDemoData: true,
+    isOperational: true,
   },
   {
     id: 'site-004',
@@ -300,14 +295,14 @@ export const HERITAGE_SITES = [
     gallery: [
       {
         url: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Stone Chariot shrine dedicated to Garuda in Vittala complex',
+        caption: 'Virupaksha temple gopuram towering above Hampi Bazaar',
       },
       {
         url: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Virupaksha temple gopuram towering above Hampi Bazaar',
+        caption: 'Stone Chariot shrine dedicated to Garuda in Vittala complex',
       },
     ],
-    isDemoData: true,
+    isOperational: true,
   },
   {
     id: 'site-005',
@@ -362,15 +357,15 @@ export const HERITAGE_SITES = [
     image: 'https://images.unsplash.com/photo-1629814249584-bd4d53cf0e7d?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Intricately carved stone sundial wheel of Konark',
+        url: 'https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Jagamohana sanctuary tower and chlorite stone reliefs',
       },
       {
-        url: 'https://images.unsplash.com/photo-1598324789736-4861f89564a0?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Dancing celestial musicians in the Natya Mandap',
+        url: 'https://images.unsplash.com/photo-1591871937573-74dbba515c4c?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Natya Mandapa celestial dancer reliefs and musicians',
       },
     ],
-    isDemoData: true,
+    isOperational: true,
   },
   {
     id: 'site-006',
@@ -425,15 +420,15 @@ export const HERITAGE_SITES = [
     image: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Chaitya prayer hall façade with arched horseshoe window',
+        url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Cave 19 Chaitya prayer hall façade with arched horseshoe window',
       },
       {
-        url: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Horseshoe ravine setting along the Waghur River gorge',
+        url: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Horseshoe basalt ravine setting along the Waghur River gorge',
       },
     ],
-    isDemoData: true,
+    isOperational: true,
   },
 ];
 

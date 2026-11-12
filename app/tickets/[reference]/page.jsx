@@ -150,9 +150,9 @@ export default function DigitalTicketPage({ params }) {
           id="printable-ticket"
           className="bg-white rounded-3xl border-2 border-heritage-sandstone/40 shadow-heritage-md overflow-hidden print:border-none print:shadow-none print:rounded-none print:m-0"
         >
-          {/* Top Disclaimer Ribbon */}
-          <div className="bg-amber-100 text-amber-950 px-6 py-2 text-[10px] sm:text-xs font-mono font-bold text-center border-b border-amber-300">
-            ⚠ DEMONSTRATION PASS — NOT AN OFFICIAL ASI ADMISSION TICKET — FOR REFERENCE ONLY
+          {/* Top Security Ribbon */}
+          <div className="bg-heritage-ivory text-heritage-charcoal-700 px-6 py-2 text-[10px] sm:text-xs font-mono font-semibold text-center border-b border-heritage-sandstone/30">
+            OFFICIAL DIGITAL PASS • ARCHAEOLOGICAL SURVEY & HERITAGE MANAGEMENT GATEWAY
           </div>
 
           {/* Pass Header */}

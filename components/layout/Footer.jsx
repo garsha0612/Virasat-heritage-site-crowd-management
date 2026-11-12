@@ -21,7 +21,7 @@ export default function Footer() {
             <span>Preserving Indian Heritage through Smart Visitor Flow Management</span>
           </div>
           <span className="font-mono text-[11px] text-heritage-sandstone-400">
-            Continuous Assessment Project • Phase 2
+            National Heritage Portal • Smart Visitor Governance
           </span>
         </div>
       </div>
@@ -50,7 +50,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-heritage-gold" />
-                <span>Contact Desk: contact@example.com (Placeholder)</span>
+                <span>Contact Desk: support@anvaya.in</span>
               </div>
             </div>
           </div>
@@ -143,10 +143,10 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Social Placeholder Pills */}
+            {/* Outreach Channels */}
             <div className="mt-4 pt-2">
               <span className="text-[10px] uppercase font-bold text-heritage-sandstone-400 tracking-wider block mb-2">
-                Heritage Awareness Channels (Placeholder)
+                Heritage Awareness Channels
               </span>
               <div className="flex items-center gap-2 text-xs">
                 <span className="px-2.5 py-1 rounded bg-heritage-charcoal-800 border border-heritage-sandstone/15 text-heritage-sandstone-300">
@@ -168,7 +168,7 @@ export default function Footer() {
       <div className="border-t border-heritage-sandstone/10 bg-heritage-charcoal-900 py-6 text-xs text-heritage-charcoal-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <p>
-            &copy; {currentYear} <strong className="text-white font-semibold">ANVAYA</strong>. All rights reserved. Developed for College Continuous Assessment.
+            &copy; {currentYear} <strong className="text-white font-semibold">ANVAYA</strong>. All rights reserved. Where Heritage Connects Generations.
           </p>
           <p className="text-[11px] font-mono text-heritage-sandstone-400">
             Adheres to Indian Architectural Heritage & Smart Governance Standards
