@@ -306,69 +306,6 @@ export const HERITAGE_SITES = [
   },
   {
     id: 'site-005',
-    slug: 'sun-temple-konark',
-    aliases: ['konark'],
-    name: 'Sun Temple Konark',
-    tagline: 'The Grand Cosmic Chariot of Surya',
-    location: 'Puri',
-    state: 'Odisha',
-    country: 'India',
-    category: 'Kalinga Sacred Architecture',
-    historicalEra: '1250 CE',
-    rating: 4.8,
-    reviewCount: 7890,
-    shortDescription:
-      'Conceived as a colossal chariot for the Sun God Surya, featuring 24 exquisitely carved stone wheels that function as accurate astronomical sundials, pulled by seven caparisoned stone horses.',
-    history:
-      'Commissioned around 1250 CE by King Narasimhadeva I of the Eastern Ganga Dynasty to commemorate military victories and celebrate the Sun God Surya. Built near the Bay of Bengal coastline, European sailors referred to the grand tower as the "Black Pagoda" because it served as an essential maritime navigational landmark along the coast.',
-    architecture:
-      'Constructed in the classical Kalinga deula architectural idiom using Khondalite and Chlorite stone blocks bonded by iron dowels. The sanctum and porch are sculpted in the form of Surya’s celestial chariot, resting on 24 giant stone wheels (nearly 10 feet in diameter) with spokes aligned to calculate time down to minutes based on solar shadow lines. Sculptural reliefs depict dancers, celestial musicians, and fauna.',
-    keyFacts: [
-      'The chariot wheels function as precise sundials, with the shadow cast on the spokes indicating the exact time of day.',
-      'Represented on the reverse of the Indian ₹10 currency note.',
-      'Seven sculpted stone horses represent the seven days of the week and seven spectral solar colors.',
-      'Declared a UNESCO World Heritage Site in 1984.',
-    ],
-    visitingHours: {
-      open: '06:00',
-      close: '20:00',
-      note: 'Open daily. Annual Konark Dance Festival held every December.',
-    },
-    ticketPricing: {
-      indian: 40,
-      foreigner: 600,
-      child: 0,
-      student: 20,
-      currency: 'INR (₹)',
-    },
-    capacity: {
-      maxInstantaneous: 3500,
-      dailyPermits: 22000,
-      currentSimulatedVisitors: 2030,
-      occupancyPercentage: 58,
-      status: 'moderate',
-    },
-    bestTimeToVisit: 'October through March. Sunrise is spectacular as dawn rays strike the Jagamohana portal.',
-    rules: [
-      'Sanctum interior has been sealed with sand for structural conservation since 1903.',
-      'Do not touch or lean against intricately carved Chlorite stone reliefs.',
-      'Guides must possess official Archaeological Survey of India (ASI) badges.',
-    ],
-    image: 'https://images.unsplash.com/photo-1629814249584-bd4d53cf0e7d?auto=format&fit=crop&w=1200&q=80',
-    gallery: [
-      {
-        url: 'https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Jagamohana sanctuary tower and chlorite stone reliefs',
-      },
-      {
-        url: 'https://images.unsplash.com/photo-1591871937573-74dbba515c4c?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Natya Mandapa celestial dancer reliefs and musicians',
-      },
-    ],
-    isOperational: true,
-  },
-  {
-    id: 'site-006',
     slug: 'ajanta-caves',
     aliases: ['ajanta'],
     name: 'Ajanta Caves',
@@ -433,7 +370,78 @@ export const HERITAGE_SITES = [
 ];
 
 /**
+ * Archived destinations: Preserved strictly for historical booking & transaction resolution
+ * Excluded from the active public booking catalogue.
+ */
+export const ARCHIVED_SITES = [
+  {
+    id: 'archived-site-konark',
+    slug: 'sun-temple-konark',
+    aliases: ['konark'],
+    name: 'Sun Temple Konark',
+    tagline: 'The Grand Cosmic Chariot of Surya',
+    location: 'Puri',
+    state: 'Odisha',
+    country: 'India',
+    category: 'Kalinga Sacred Architecture',
+    historicalEra: '1250 CE',
+    rating: 4.8,
+    reviewCount: 7890,
+    shortDescription:
+      'Conceived as a colossal chariot for the Sun God Surya, featuring 24 exquisitely carved stone wheels that function as accurate astronomical sundials, pulled by seven caparisoned stone horses.',
+    history:
+      'Commissioned around 1250 CE by King Narasimhadeva I of the Eastern Ganga Dynasty to commemorate military victories and celebrate the Sun God Surya. Built near the Bay of Bengal coastline, European sailors referred to the grand tower as the "Black Pagoda" because it served as an essential maritime navigational landmark along the coast.',
+    architecture:
+      'Constructed in the classical Kalinga deula architectural idiom using Khondalite and Chlorite stone blocks bonded by iron dowels. The sanctum and porch are sculpted in the form of Surya’s celestial chariot, resting on 24 giant stone wheels (nearly 10 feet in diameter) with spokes aligned to calculate time down to minutes based on solar shadow lines. Sculptural reliefs depict dancers, celestial musicians, and fauna.',
+    keyFacts: [
+      'The chariot wheels function as precise sundials, with the shadow cast on the spokes indicating the exact time of day.',
+      'Represented on the reverse of the Indian ₹10 currency note.',
+      'Seven sculpted stone horses represent the seven days of the week and seven spectral solar colors.',
+      'Declared a UNESCO World Heritage Site in 1984.',
+    ],
+    visitingHours: {
+      open: '06:00',
+      close: '20:00',
+      note: 'Open daily. Annual Konark Dance Festival held every December.',
+    },
+    ticketPricing: {
+      indian: 40,
+      foreigner: 600,
+      child: 0,
+      student: 20,
+      currency: 'INR (₹)',
+    },
+    capacity: {
+      maxInstantaneous: 3500,
+      dailyPermits: 22000,
+      currentSimulatedVisitors: 2030,
+      occupancyPercentage: 58,
+      status: 'moderate',
+    },
+    bestTimeToVisit: 'October through March. Sunrise is spectacular as dawn rays strike the Jagamohana portal.',
+    rules: [
+      'Sanctum interior has been sealed with sand for structural conservation since 1903.',
+      'Do not touch or lean against intricately carved Chlorite stone reliefs.',
+      'Guides must possess official Archaeological Survey of India (ASI) badges.',
+    ],
+    image: 'https://images.unsplash.com/photo-1629814249584-bd4d53cf0e7d?auto=format&fit=crop&w=1200&q=80',
+    gallery: [
+      {
+        url: 'https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Jagamohana sanctuary tower and chlorite stone reliefs',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1591871937573-74dbba515c4c?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Natya Mandapa celestial dancer reliefs and musicians',
+      },
+    ],
+    isOperational: false,
+  },
+];
+
+/**
  * Find monument by slug or alias.
+ * Searches active catalogue first, then archived destinations.
  * @param {string} slug - Target slug
  * @returns {object|null}
  */
@@ -446,7 +454,14 @@ export function getSiteBySlug(slug) {
         site.slug === cleanSlug ||
         site.aliases?.includes(cleanSlug) ||
         site.id === cleanSlug
-    ) || null
+    ) ||
+    ARCHIVED_SITES.find(
+      (site) =>
+        site.slug === cleanSlug ||
+        site.aliases?.includes(cleanSlug) ||
+        site.id === cleanSlug
+    ) ||
+    null
   );
 }
 

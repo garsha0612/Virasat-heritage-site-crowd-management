@@ -134,7 +134,7 @@ export async function runAdminAudit() {
     assert.strictEqual(res.status, 200, 'Admin request returned HTTP 200');
     const data = await res.json();
     assert.strictEqual(data.success, true, 'Overview response reports success: true');
-    assert(data.data.metrics.totalSites >= 6, 'Reports totalSites >= 6');
+    assert(data.data.metrics.totalSites >= 5, 'Reports totalSites >= 5');
     assert(typeof data.data.metrics.totalRevenue === 'number', 'Reports totalRevenue metric');
     recordPass('TEST 4: Administrator accesses live MongoDB overview statistics');
   } catch (err) {
