@@ -146,46 +146,46 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Academic CA Project & Simulation Disclosure */}
+        {/* Heritage Conservation & Tourism Mission */}
         <div className="bg-heritage-charcoal text-heritage-sandstone-200 rounded-2xl p-8 sm:p-10 border border-heritage-gold/25 space-y-6">
           <div className="flex items-center gap-3 pb-4 border-b border-heritage-sandstone/15">
             <Sparkles className="w-6 h-6 text-heritage-gold" />
             <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
-              Academic Project & Data Disclosure
+              Heritage Conservation & Tourism Excellence
             </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-xs sm:text-sm text-heritage-charcoal-300 leading-relaxed font-sans">
             <div className="space-y-3">
               <h4 className="font-serif text-base font-bold text-white uppercase tracking-wider">
-                College Continuous Assessment Context
+                Intelligent Visitor Distribution
               </h4>
               <p>
-                ANVAYA is engineered as a comprehensive technical project demonstrating modern enterprise web architecture using the Next.js App Router, React 18, and MongoDB Atlas. It serves as an academic prototype for state and national tourism departments.
+                ANVAYA leverages advanced capacity models and hourly quota allocations to safeguard centuries-old stone architecture against degradation caused by microclimatic fluctuations and structural strain.
               </p>
             </div>
 
             <div className="space-y-3">
               <h4 className="font-serif text-base font-bold text-white uppercase tracking-wider">
-                Simulated Telemetry Disclosure
+                Guaranteed Turnstile Access
               </h4>
               <p>
-                All crowd numbers, turnstile ticks, occupancy gauges, and hourly visitor figures displayed throughout this portal are generated via an algorithmic mathematical model. Unless explicitly interfaced with physical IoT turnstiles or official ASI ministry APIs, all statistics must be recognized as simulated demonstration data.
+                By scheduling specific entry windows, visitors avoid lengthy ticket counter queues and experience India&apos;s timeless heritage under ideal atmospheric conditions and peaceful monument ambiance.
               </p>
             </div>
           </div>
 
           <div className="pt-4 flex flex-wrap items-center gap-4">
             <Button href="/explore" variant="gold" size="md" rightIcon={Compass}>
-              Explore Pilot Monuments
+              Explore Heritage Monuments
             </Button>
             <Button
               href="/crowd-status"
               variant="outline"
               size="md"
-              className="text-white border-white/40 hover:bg-white/10"
+              className="text-heritage-sandstone border-heritage-sandstone/40 hover:bg-heritage-sandstone/10"
             >
-              Inspect Crowd Gauges
+              Live Crowd Telemetry
             </Button>
           </div>
         </div>

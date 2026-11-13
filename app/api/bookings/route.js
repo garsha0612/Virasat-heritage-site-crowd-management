@@ -201,7 +201,7 @@ export async function POST(request) {
               ...(idempotencyKey ? { idempotencyKey } : {}),
             },
           ],
-          { session }
+          session ? { session } : {}
         );
 
         return doc;

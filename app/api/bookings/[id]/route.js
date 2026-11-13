@@ -60,7 +60,8 @@ export async function GET(request, { params }) {
     // Automatic QR Recovery: If confirmed and paid, but QR data URL is missing
     let activeQrCodeDataUrl = booking.qrCodeDataUrl;
     let activeTicketCode = booking.ticketCode;
-    if (booking.bookingStatus === 'confirmed' && booking.paymentStatus === 'paid' && !booking.qrCodeDataUrl) {
+    const isPaid = booking.paymentStatus === 'paid' || booking.paymentStatus === 'completed';
+    if (booking.bookingStatus === 'confirmed' && isPaid && !booking.qrCodeDataUrl) {
       try {
         const qrRes = await ensureBookingQRCode(booking._id.toString());
         if (qrRes.success) {

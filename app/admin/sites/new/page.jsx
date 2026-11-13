@@ -154,7 +154,7 @@ export default function NewHeritageSitePage() {
           Register New Heritage Monument
         </h1>
         <p className="text-xs text-heritage-charcoal-400 font-sans mt-1">
-          Add an official destination record with verified ASI tariffs, visiting guidelines, and demonstration capacity settings.
+          Add an official destination record with verified ASI tariffs, visiting guidelines, and carrying capacity quotas.
         </p>
       </div>
 
@@ -431,12 +431,12 @@ export default function NewHeritageSitePage() {
           </div>
         </div>
 
-        {/* Section 4: Operational Hours & Demonstration Capacity */}
+        {/* Section 4: Operational Hours & Carrying Capacity Quotas */}
         <div className="bg-white p-6 sm:p-8 rounded-3xl border border-heritage-sandstone/30 shadow-heritage-sm space-y-5">
           <div className="flex items-center gap-2.5 pb-4 border-b border-heritage-sandstone/20">
             <Clock className="w-4 h-4 text-heritage-green" />
             <h2 className="font-serif text-base font-bold text-heritage-charcoal">
-              Visiting Hours & Demonstration Capacity
+              Visiting Hours & Carrying Capacity Quotas
             </h2>
           </div>
 

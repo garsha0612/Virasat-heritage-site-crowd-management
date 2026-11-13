@@ -283,13 +283,12 @@ export default function BookingWizardPage({ params }) {
           </Link>
         </div>
 
-        {/* Academic Simulation Notice Banner */}
-        <div className="mb-6 p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-amber-900 text-xs flex items-start gap-3">
-          <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+        {/* Verified Monument Guidelines Banner */}
+        <div className="mb-6 p-4 rounded-2xl bg-heritage-sandstone-50 border border-heritage-sandstone/30 text-heritage-charcoal-700 text-xs flex items-start gap-3">
+          <ShieldCheck className="w-4 h-4 text-heritage-green shrink-0 mt-0.5" />
           <div className="leading-relaxed">
-            <strong>NOTICE:</strong> ANVAYA is an educational heritage site management platform. 
-            Time slot intervals and entry permits model crowd flow analytics.
-            Official entry tickets must be procured through verified government portals or ASI monument counters.
+            <strong>Timed Entry Guidelines:</strong> Please arrive within your selected 2-hour entry window.
+            Advance reservations guarantee entry plinth access and turnstile admission.
           </div>
         </div>
 
@@ -392,7 +391,7 @@ export default function BookingWizardPage({ params }) {
                 {/* Slots Grid */}
                 <div className="mt-6">
                   <label className="block text-xs font-semibold text-heritage-charcoal-700 mb-2 font-sans">
-                    Available Demonstration Slots for {selectedDate}
+                    Available Entry Slots for {selectedDate}
                   </label>
 
                   {slotsLoading ? (

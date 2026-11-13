@@ -45,7 +45,7 @@ export default function BookingConfirmationPage({ params }) {
         setBooking(bookingData);
 
         // Step 2: Verify payment if not already completed
-        if (bookingData.paymentStatus !== 'completed') {
+        if (!['completed', 'paid'].includes(bookingData.paymentStatus)) {
           setVerifying(true);
           
           try {
@@ -56,7 +56,7 @@ export default function BookingConfirmationPage({ params }) {
 
             if (verifyRes.ok && verifyData.success) {
               // Payment verified successfully
-              if (verifyData.data.paymentStatus === 'completed') {
+              if (['completed', 'paid'].includes(verifyData.data.paymentStatus)) {
                 setPaymentVerified(true);
                 // Reload booking to get updated data with QR ticket
                 const updatedRes = await fetch(`/api/bookings/${reference}`);

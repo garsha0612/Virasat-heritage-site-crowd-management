@@ -54,7 +54,8 @@ export async function POST(request, { params }) {
       );
     }
 
-    if (booking.bookingStatus !== 'confirmed' || booking.paymentStatus !== 'paid') {
+    const isPaid = booking.paymentStatus === 'paid' || booking.paymentStatus === 'completed';
+    if (booking.bookingStatus !== 'confirmed' || !isPaid) {
       return NextResponse.json(
         {
           success: false,

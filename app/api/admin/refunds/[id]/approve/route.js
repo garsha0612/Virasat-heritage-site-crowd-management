@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/adminAuth';
 import { connectToDatabase, withDatabaseTransaction } from '@/lib/mongodb';
 import Refund from '@/models/Refund';
 import Booking from '@/models/Booking';
+import { releaseSlotCapacity } from '@/lib/slots';
 
 export const dynamic = 'force-dynamic';
 
@@ -71,19 +72,32 @@ export async function POST(request, { params }) {
 
       await refund.save({ session: dbSession });
 
-      await Booking.findByIdAndUpdate(
-        refund.booking,
-        {
-          $set: {
-            'refund.status': 'APPROVED',
-            'refund.approvedAmount': refund.requestedAmount,
-            'refund.adminNote': adminNote || 'Approved by administrator',
-            'refund.reviewedAt': new Date(),
-            'cancellation.refundStatus': 'refund_approved',
-          },
-        },
-        { session: dbSession }
-      );
+      // Cancel booking and restore slot capacity exactly once upon approval
+      const booking = await Booking.findById(refund.booking).session(dbSession);
+      if (booking) {
+        if (!booking.cancellation?.slotRestored && booking.timeSlot?.slotId && booking.totalTickets > 0) {
+          await releaseSlotCapacity(booking.timeSlot.slotId, booking.totalTickets, dbSession);
+        }
+
+        booking.bookingStatus = 'cancelled';
+        booking.cancellation = {
+          cancelledAt: booking.cancellation?.cancelledAt || new Date(),
+          cancellationReason: refund.reason || 'Refund approved by administrator',
+          reason: refund.reason || 'Refund approved by administrator',
+          slotRestored: true,
+          refundAmount: refund.requestedAmount,
+          refundStatus: 'refund_approved',
+        };
+        booking.refund = {
+          ...(booking.refund?.toObject ? booking.refund.toObject() : booking.refund || {}),
+          status: 'APPROVED',
+          approvedAmount: refund.requestedAmount,
+          adminNote: adminNote || 'Approved by administrator',
+          reviewedAt: new Date(),
+        };
+
+        await booking.save({ session: dbSession });
+      }
 
       return refund;
     });

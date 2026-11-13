@@ -148,6 +148,7 @@ export async function POST(request, { params }) {
       // Update Booking
       await Booking.findByIdAndUpdate(booking._id, {
         $set: {
+          bookingStatus: 'cancelled',
           paymentStatus: isInstantSuccess ? 'refunded' : booking.paymentStatus,
           'refund.status': finalStatus,
           'refund.processedAt': new Date(),

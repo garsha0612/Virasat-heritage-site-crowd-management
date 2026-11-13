@@ -181,7 +181,7 @@ export async function runRefundAudit() {
     })();
 
     // 3. Visitor A successfully submits refund request for paid booking
-    await it('Allow visitor to submit valid refund request, creating Refund entity and releasing slot', async () => {
+    await it('Allow visitor to submit valid refund request, keeping booking confirmed and slot held pending admin review', async () => {
       const slotBefore = await TimeSlot.findById(testSlot._id);
       const initialBookings = slotBefore.reservedCount;
 
@@ -206,9 +206,9 @@ export async function runRefundAudit() {
 
       createdRefundId = data.data.refundId;
 
-      // Verify DB status
+      // Verify DB status: Booking remains confirmed while under review
       const updatedBooking = await Booking.findById(bookingA._id);
-      assert.strictEqual(updatedBooking.bookingStatus, 'cancelled');
+      assert.strictEqual(updatedBooking.bookingStatus, 'confirmed', 'Booking status remains confirmed while under review');
       assert.strictEqual(updatedBooking.refund.status, 'REQUESTED');
       assert.strictEqual(updatedBooking.refund.refundId, createdRefundId);
 
@@ -220,9 +220,9 @@ export async function runRefundAudit() {
       assert.strictEqual(refundDoc.auditLog[0].action, 'REQUEST_SUBMITTED');
       createdRefundMongoId = refundDoc._id.toString();
 
-      // Verify slot capacity restoration
+      // Verify slot capacity is NOT prematurely released while under review
       const slotAfter = await TimeSlot.findById(testSlot._id);
-      assert.strictEqual(slotAfter.reservedCount, initialBookings - 2);
+      assert.strictEqual(slotAfter.reservedCount, initialBookings, 'Slot capacity held while under review');
     })();
 
     // 4. Duplicate request prevention
@@ -315,7 +315,10 @@ export async function runRefundAudit() {
     })();
 
     // 10. Admin approves refund
-    await it('Administrator approves refund request and stages for gateway settlement', async () => {
+    await it('Administrator approves refund request, cancelling booking and restoring slot capacity', async () => {
+      const slotBeforeApproval = await TimeSlot.findById(testSlot._id);
+      const bookingsBeforeApproval = slotBeforeApproval.reservedCount;
+
       const res = await fetch(`${appUrl}/api/admin/refunds/${createdRefundMongoId}`, {
         method: 'POST',
         headers: {
@@ -331,7 +334,12 @@ export async function runRefundAudit() {
       assert.strictEqual(data.data.refund.approvedAmount, 100);
 
       const bookingState = await Booking.findById(bookingA._id);
+      assert.strictEqual(bookingState.bookingStatus, 'cancelled', 'Booking transitioned to cancelled upon approval');
       assert.strictEqual(bookingState.refund.status, 'APPROVED');
+
+      // Verify slot capacity restoration occurs upon approval
+      const slotAfterApproval = await TimeSlot.findById(testSlot._id);
+      assert.strictEqual(slotAfterApproval.reservedCount, bookingsBeforeApproval - 2, 'Slot capacity released exactly once on approval');
     })();
 
     // 11. Admin gateway dispatch: Genuine Cashfree call (sandbox resilience)
@@ -475,6 +483,11 @@ export async function runRefundAudit() {
       const updatedDoc = await Refund.findById(refundDoc._id);
       assert.strictEqual(updatedDoc.status, 'REJECTED');
       assert.strictEqual(updatedDoc.adminReview.adminNote, 'Weather conditions do not qualify for pass refund per ASI regulations.');
+
+      // Verify booking status remains confirmed - rejection does NOT leave visitor with unintended cancelled booking
+      const rejectBookingDoc = await Booking.findById(rejectBooking._id);
+      assert.strictEqual(rejectBookingDoc.bookingStatus, 'confirmed', 'Booking remains confirmed after refund rejection');
+      assert.strictEqual(rejectBookingDoc.refund.status, 'REJECTED');
     })();
 
     console.log('\n======================================================================');

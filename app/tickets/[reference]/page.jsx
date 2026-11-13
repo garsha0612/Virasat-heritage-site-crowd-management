@@ -41,7 +41,7 @@ export default function DigitalTicketPage({ params }) {
           const bookingData = data.data.booking;
           
           // Check if payment is completed
-          if (bookingData.paymentStatus !== 'completed' || bookingData.bookingStatus !== 'confirmed') {
+          if (!['completed', 'paid'].includes(bookingData.paymentStatus) || bookingData.bookingStatus !== 'confirmed') {
             setError('Ticket not available. Payment must be completed before accessing your digital ticket.');
             setBooking(bookingData); // Still set booking for reference info
           } else if (!bookingData.qrCodeDataUrl || !bookingData.ticketCode) {
@@ -108,6 +108,7 @@ export default function DigitalTicketPage({ params }) {
   const isConfirmed = booking.bookingStatus === 'confirmed';
   const isCancelled = booking.bookingStatus === 'cancelled';
   const isPending = booking.bookingStatus === 'pending';
+  const isRefundUnderReview = ['REQUESTED', 'UNDER_REVIEW'].includes(booking.refund?.status);
 
   return (
     <div className="py-8 sm:py-16 bg-heritage-ivory min-h-screen">
@@ -184,7 +185,9 @@ export default function DigitalTicketPage({ params }) {
           {/* Status Ribbon */}
           <div
             className={`px-6 py-2.5 text-xs font-semibold flex items-center justify-between border-b ${
-              isConfirmed
+              isRefundUnderReview
+                ? 'bg-amber-50 text-amber-900 border-amber-300'
+                : isConfirmed
                 ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                 : isCancelled
                 ? 'bg-red-50 text-red-800 border-red-200'
@@ -192,15 +195,17 @@ export default function DigitalTicketPage({ params }) {
             }`}
           >
             <div className="flex items-center gap-2">
-              {isConfirmed && <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
+              {isRefundUnderReview && <AlertTriangle className="w-4 h-4 text-amber-600" />}
+              {!isRefundUnderReview && isConfirmed && <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
               {isCancelled && <XCircle className="w-4 h-4 text-red-600" />}
               {isPending && <AlertTriangle className="w-4 h-4 text-amber-600" />}
               <span className="uppercase tracking-wider font-mono text-[11px]">
-                Status: {booking.bookingStatus}
+                Status: {isRefundUnderReview ? 'Refund Under Review' : booking.bookingStatus}
               </span>
             </div>
             <span className="text-[11px] font-sans">
-              {isConfirmed && 'Confirmed Pass — Entry Slot Secured'}
+              {isRefundUnderReview && 'Refund Requested — Monument Entry Suspended Pending Admin Review'}
+              {!isRefundUnderReview && isConfirmed && 'Confirmed Pass — Entry Slot Secured'}
               {isCancelled && 'RESERVATION CANCELLED — PASS VOIDED'}
               {isPending && 'Awaiting Payment'}
             </span>
@@ -261,7 +266,18 @@ export default function DigitalTicketPage({ params }) {
                       VOID / CANCELLED
                     </span>
                     <span className="text-[10px] text-red-600 mt-1">
-                      This QR pass has been permanently deactivated in the demonstration database.
+                      This QR pass has been permanently deactivated in the central reservation system.
+                    </span>
+                  </div>
+                )}
+                {isRefundUnderReview && !isCancelled && (
+                  <div className="absolute inset-0 bg-amber-50/95 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 text-center">
+                    <AlertTriangle className="w-12 h-12 text-amber-600 mb-2" />
+                    <span className="font-mono font-bold text-amber-800 text-sm tracking-wider">
+                      REFUND UNDER REVIEW
+                    </span>
+                    <span className="text-[10px] text-amber-700 mt-1 max-w-[200px]">
+                      Entry validation is suspended while administrative review is underway.
                     </span>
                   </div>
                 )}

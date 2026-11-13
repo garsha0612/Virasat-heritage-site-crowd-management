@@ -17,6 +17,7 @@ import {
   RefreshCw,
   AlertCircle,
   Info,
+  ShieldCheck,
 } from 'lucide-react';
 import {
   AreaChart,
@@ -110,16 +111,21 @@ export default function AdminOverviewPage() {
         </div>
       </div>
 
-      {/* Educational Notice Banner */}
-      <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-amber-900 text-xs flex items-start gap-3">
-        <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-        <div className="font-sans leading-relaxed">
-          <strong className="font-semibold text-amber-950">Academic Continuous Assessment Notice:</strong>
-          <span className="ml-1">
-            Statistics reflect active MongoDB transactional bookings and user registrations. Crowd telemetry
-            classifications and time slot capacities represent configurable educational demonstration settings.
+      {/* Platform Operational Status Strip */}
+      <div className="p-3.5 rounded-2xl bg-white border border-heritage-sandstone/30 text-heritage-charcoal-700 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-heritage-sm">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-heritage-green shrink-0" />
+          <span className="font-semibold text-heritage-charcoal">
+            Administrative Operations Console:
+          </span>
+          <span className="text-heritage-charcoal-500">
+            Real-time transactional monitoring, time slot carrying capacities, and visitor reservation governance.
           </span>
         </div>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          Systems Operational
+        </span>
       </div>
 
       {error && (

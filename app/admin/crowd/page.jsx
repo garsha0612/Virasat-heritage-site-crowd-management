@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   Info,
   Users,
+  ShieldCheck,
 } from 'lucide-react';
 import {
   BarChart,
@@ -78,7 +79,7 @@ export default function AdminCrowdPage() {
       });
       const json = await res.json();
       if (res.ok && json.success) {
-        setConfigMsg({ type: 'success', text: 'Demonstration crowd thresholds updated successfully.' });
+        setConfigMsg({ type: 'success', text: 'Monument carrying capacity thresholds updated successfully.' });
         fetchCrowd();
       } else {
         setConfigMsg({ type: 'error', text: json.message || 'Failed to update thresholds.' });
@@ -116,20 +117,16 @@ export default function AdminCrowdPage() {
         </button>
       </div>
 
-      {/* Mandatory Academic Simulation Disclaimer Banner */}
-      <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-3 shadow-heritage-sm">
-        <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-        <div className="font-sans leading-relaxed space-y-1">
-          <p className="font-bold text-amber-950 uppercase tracking-wide text-[11px]">
-            Academic Project Simulation Notice
+      {/* Platform Capacity Governance Banner */}
+      <div className="p-4 rounded-2xl bg-white border border-heritage-sandstone/30 text-heritage-charcoal-700 text-xs flex items-start gap-3 shadow-heritage-sm">
+        <ShieldCheck className="w-5 h-5 text-heritage-green shrink-0 mt-0.5" />
+        <div className="font-sans leading-relaxed space-y-0.5">
+          <p className="font-bold text-heritage-charcoal uppercase tracking-wide text-[11px]">
+            Carrying Capacity & Monument Inflow Controls
           </p>
-          <p>
-            {data?.disclaimer ||
-              'Simulated crowd data – not connected to official sensors or live government systems.'}
-          </p>
-          <p className="text-[11px] text-amber-800">
-            Occupancy estimates are derived algorithmically from time-slot booking volumes and configurable
-            demonstration parameters for evaluating academic crowd-dispersal mechanisms.
+          <p className="text-heritage-charcoal-500">
+            Real-time occupancy metrics reflect active booking reservations and turnstile ingress.
+            Adjust thresholds below to dynamically modulate turnstile alert states across destinations.
           </p>
         </div>
       </div>
@@ -139,7 +136,7 @@ export default function AdminCrowdPage() {
         <div className="flex items-center gap-2.5 pb-4 border-b border-heritage-sandstone/20">
           <Sliders className="w-4 h-4 text-heritage-green" />
           <h2 className="font-serif text-base font-bold text-heritage-charcoal">
-            Configure Demonstration Thresholds & Simulation Inputs
+            Configure Monument Carrying Capacity Thresholds
           </h2>
         </div>
 

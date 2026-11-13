@@ -101,7 +101,7 @@ export const HERITAGE_SITES = [
     image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1000&q=80',
+        url: 'https://images.unsplash.com/photo-1585506942812-e72b29cef752?auto=format&fit=crop&w=1000&q=80',
         caption: 'Central dome and reflecting pool along the Charbagh axis',
       },
       {
@@ -168,8 +168,8 @@ export const HERITAGE_SITES = [
     image: 'https://images.unsplash.com/photo-1598324789736-4861f89564a0?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1592635196078-9fe3d54f2377?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Diwan-i-Khas white marble arches and pietra dura motifs',
+        url: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Lahori Gate red sandstone portal and ramparts',
       },
       {
         url: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=1000&q=80',
@@ -235,7 +235,7 @@ export const HERITAGE_SITES = [
         caption: 'Alai Darwaza gateway arch and intricate red sandstone lattice',
       },
       {
-        url: 'https://images.unsplash.com/photo-1588096344356-9b51fa168953?auto=format&fit=crop&w=1000&q=80',
+        url: 'https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?auto=format&fit=crop&w=1000&q=80',
         caption: 'Quwwat-ul-Islam cloisters and Iron Pillar courtyard',
       },
     ],
@@ -291,11 +291,11 @@ export const HERITAGE_SITES = [
       'Respect active religious ceremonies inside the Virupaksha sanctum.',
       'Wear sturdy walking shoes for rocky granite terrain.',
     ],
-    image: 'https://images.unsplash.com/photo-1600100397608-f010f443831b?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Virupaksha temple gopuram towering above Hampi Bazaar',
+        url: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Granite boulder terrain and ancient pavilions along the Tungabhadra River',
       },
       {
         url: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1000&q=80',
@@ -420,8 +420,8 @@ export const HERITAGE_SITES = [
     image: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
-        url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Cave 19 Chaitya prayer hall façade with arched horseshoe window',
+        url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Cave 19 Chaitya prayer hall and arched facade',
       },
       {
         url: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1000&q=80',

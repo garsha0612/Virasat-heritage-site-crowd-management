@@ -56,6 +56,7 @@ export async function POST(request, { params }) {
       booking.cancellation = {
         cancelledAt: new Date(),
         reason: `[ADMIN: ${auth.adminUser.email}] ${reason}`,
+        slotRestored: true,
         refundStatus: booking.paymentStatus === 'paid' ? 'refund_pending' : 'none',
         refundAmount: booking.paymentStatus === 'paid' ? booking.totalAmount : 0,
       };

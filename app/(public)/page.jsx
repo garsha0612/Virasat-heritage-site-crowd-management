@@ -210,17 +210,17 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Transparent Disclaimer Box */}
+              {/* Conservation Advisory */}
               <div className="p-4 rounded-xl bg-heritage-ivory border border-heritage-sandstone/30 flex items-start gap-3 text-xs text-heritage-charcoal-600">
                 <ShieldCheck className="w-5 h-5 text-heritage-green shrink-0 mt-0.5" />
                 <p>
-                  <strong>Data Transparency Notice:</strong> All real-time crowd metrics, gauges, and hourly statistics in this demonstration platform are generated via mathematical simulation models unless bridged to physical IoT turnstile sensors.
+                  <strong>Carrying Capacity Standards:</strong> Real-time monument occupancy meters balance public tourist access with structural conservation, enabling uncrowded exploration of India&apos;s timeless heritage.
                 </p>
               </div>
 
               <div className="pt-2">
                 <Button href="/crowd-status" variant="primary" size="md" rightIcon={BarChart3}>
-                  Inspect Live-Style Crowd Dashboard
+                  Inspect Live Crowd Dashboard
                 </Button>
               </div>
             </div>

@@ -163,7 +163,6 @@ export default function VisitorDashboard() {
             b.id === selectedRefundBooking.id
               ? {
                   ...b,
-                  bookingStatus: 'cancelled',
                   refund: {
                     status: 'REQUESTED',
                     refundId: data.data.refundId,
@@ -496,17 +495,28 @@ export default function VisitorDashboard() {
                 <h3 className="font-serif text-lg font-bold text-heritage-charcoal">
                   {activeTab === 'upcoming'
                     ? 'No Active Reservations'
+                    : activeTab === 'refunds'
+                    ? 'No Active Refund Requests'
                     : 'No Historical or Cancelled Passes'}
                 </h3>
                 <p className="text-xs text-heritage-charcoal-500 mt-2 leading-relaxed font-sans">
                   {activeTab === 'upcoming'
                     ? 'You have no upcoming monument visits scheduled. Explore our 6 pilot heritage destinations to reserve guaranteed entry permits.'
+                    : activeTab === 'refunds'
+                    ? 'You do not have any pending or historical refund requests. Completed payments are eligible for refund review prior to scheduled visit dates.'
                     : 'You do not have any past visits or cancelled reservations on record.'}
                 </p>
                 {activeTab === 'upcoming' && (
                   <div className="mt-6">
                     <Button href="/explore" variant="primary" size="md" leftIcon={Compass}>
                       Explore Destinations to Book
+                    </Button>
+                  </div>
+                )}
+                {activeTab === 'refunds' && (
+                  <div className="mt-6">
+                    <Button href="/account/refunds" variant="outline" size="sm" leftIcon={RotateCcw}>
+                      View Refund Audit History
                     </Button>
                   </div>
                 )}
@@ -667,6 +677,19 @@ export default function VisitorDashboard() {
                                   Request Refund
                                 </Button>
                               )}
+
+                            {/* Track Refund Action for bookings with active/historical refund */}
+                            {b.refund?.status && !['NOT_REQUESTED', 'FAILED'].includes(b.refund.status) && (
+                              <Button
+                                href="/account/refunds"
+                                variant="outline"
+                                size="sm"
+                                leftIcon={RotateCcw}
+                                className="text-amber-800 border-amber-300 hover:bg-amber-50"
+                              >
+                                Track Refund
+                              </Button>
+                            )}
 
                             {isCancelled && (
                               <Button
@@ -850,7 +873,7 @@ export default function VisitorDashboard() {
             </div>
 
             <p className="text-[11px] text-heritage-charcoal-400 italic">
-              * Note: Submitting a refund request will cancel the entry pass and return the reserved time-slot to public quota. Upon administrator approval, the funds will be credited to your original payment method via Cashfree.
+              * Note: Submitting a refund request places your booking under administrator review. Upon approval, your reservation is cancelled, slot capacity returned to quota, and the refund settled via Cashfree. If rejected, your reservation remains active and valid.
             </p>
 
             <div className="pt-4 flex items-center justify-end gap-3 border-t border-heritage-sandstone/15">

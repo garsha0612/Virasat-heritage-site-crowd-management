@@ -278,9 +278,9 @@ export default function AdminSettingsPage() {
 
           <div className="p-3.5 rounded-2xl bg-heritage-sandstone-50 border border-heritage-sandstone/20 space-y-1">
             <span className="text-[10px] text-heritage-charcoal-400 font-mono uppercase block">
-              Project Assessment Phase
+              Platform Release
             </span>
-            <p className="font-bold text-heritage-charcoal">{systemInfo?.academicProjectPhase}</p>
+            <p className="font-bold text-heritage-charcoal">{systemInfo?.platformVersion || 'v1.0.0 (Production Master)'}</p>
           </div>
 
           <div className="p-3.5 rounded-2xl bg-heritage-sandstone-50 border border-heritage-sandstone/20 space-y-1">

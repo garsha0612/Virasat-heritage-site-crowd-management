@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Landmark, Compass, ShieldAlert, Sparkles, Mail, MapPin } from 'lucide-react';
+import { Landmark, Compass, ShieldCheck, Sparkles, Mail, MapPin } from 'lucide-react';
 import Logo from '@/components/brand/Logo';
 import BrandName from '@/components/brand/BrandName';
 import BrandTagline from '@/components/brand/BrandTagline';
@@ -128,18 +128,18 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Simulation Disclaimer & Standards */}
+          {/* Column 4: Heritage Standards & Smart Governance */}
           <div>
             <h4 className="font-serif text-sm font-bold text-white uppercase tracking-wider mb-4 pb-2 border-b border-heritage-sandstone/15">
-              Data Transparency
+              Standards & Integrity
             </h4>
             <div className="bg-heritage-charcoal-800/80 p-4 rounded-lg border border-heritage-sandstone/15 space-y-2 text-xs">
               <div className="flex items-center gap-2 text-heritage-gold-300 font-semibold">
-                <ShieldAlert className="w-4 h-4 shrink-0" />
-                <span>Simulated Crowd Data</span>
+                <ShieldCheck className="w-4 h-4 shrink-0" />
+                <span>Carrying Capacity Governance</span>
               </div>
               <p className="text-[11px] text-heritage-charcoal-300 leading-relaxed">
-                Crowd occupancy metrics, hourly distribution curves, and advisory alerts are generated via mathematical simulation models to demonstrate smart crowd governance.
+                Crowd occupancy quotas, hourly distribution curves, and advisory alerts are engineered to protect fragile monument fabric and regulate timed visitor access.
               </p>
             </div>
 

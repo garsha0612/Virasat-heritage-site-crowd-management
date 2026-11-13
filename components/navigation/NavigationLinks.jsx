@@ -32,6 +32,7 @@ export default function NavigationLinks({
       links.push({ label: 'Admin Portal', href: '/admin' });
     } else {
       links.push({ label: 'My Bookings', href: '/dashboard' });
+      links.push({ label: 'Refunds', href: '/account/refunds' });
       links.push({ label: 'My Profile', href: '/profile' });
     }
   }

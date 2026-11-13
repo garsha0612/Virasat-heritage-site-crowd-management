@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B4332" />
+      <stop offset="50%" stop-color="#2D5A43" />
+      <stop offset="100%" stop-color="#212529" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C5A059" />
+      <stop offset="100%" stop-color="#D4A373" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bgGrad)" />
+  <g opacity="0.08" stroke="#D4A373" stroke-width="1.5">
+    <circle cx="600" cy="400" r="300" />
+    <circle cx="600" cy="400" r="200" />
+    <circle cx="600" cy="400" r="100" />
+    <path d="M 300 400 L 900 400 M 600 100 L 600 700" />
+  </g>
+  <!-- Architectural Arch Silhouette -->
+  <path d="M 450 650 V 420 C 450 337 517 270 600 270 C 683 270 750 337 750 420 V 650 Z" fill="none" stroke="url(#goldGrad)" stroke-width="4" opacity="0.4" />
+  <path d="M 480 650 V 430 C 480 364 534 310 600 310 C 666 310 720 364 720 430 V 650 Z" fill="none" stroke="#D4A373" stroke-width="1.5" opacity="0.25" />
+  <circle cx="600" cy="240" r="8" fill="#C5A059" opacity="0.6" />
+  <!-- Text Brand -->
+  <text x="600" y="520" text-anchor="middle" font-family="'Cinzel', 'Times New Roman', serif" font-size="44" font-weight="700" fill="#FDFBF7" letter-spacing="8">ANVAYA</text>
+  <text x="600" y="560" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" fill="#D4A373" letter-spacing="3">WHERE HERITAGE CONNECTS GENERATIONS</text>
+  <text x="600" y="600" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#FDFBF7" opacity="0.6" letter-spacing="1.5">ARCHAEOLOGICAL SURVEY &amp; NATIONAL MONUMENT ARCHIVE</text>
+</svg>

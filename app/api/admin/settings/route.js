@@ -26,7 +26,7 @@ export async function GET(request) {
 
     const systemInfo = {
       applicationName: 'ANVAYA Smart Crowd Management & Ticketing',
-      academicProjectPhase: 'Phase 6 (Administration & Heritage Management)',
+      platformVersion: 'v1.0.0 (Production Master)',
       framework: 'Next.js 14 App Router (React 18)',
       nodeVersion: process.version,
       databaseTopology: isMaster.setName ? `Replica Set ('${isMaster.setName}')` : 'Standalone MongoDB',

@@ -71,9 +71,21 @@ export async function runCashfreeAndRbacAudit() {
   let createdBookingRef = '';
   let cashfreeOrderId = '';
 
+  async function safeFetch(url, options, retries = 2) {
+    try {
+      return await fetch(url, options);
+    } catch (err) {
+      if (retries > 0 && (err.cause?.code === 'ECONNRESET' || err.code === 'ECONNRESET')) {
+        await new Promise((r) => setTimeout(r, 500));
+        return await safeFetch(url, options, retries - 1);
+      }
+      throw err;
+    }
+  }
+
   // Helper to register users
   async function registerUser(name, email, role = 'visitor') {
-    const res = await fetch(`${BASE_URL}/api/auth/register`, {
+    const res = await safeFetch(`${BASE_URL}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -98,7 +110,7 @@ export async function runCashfreeAndRbacAudit() {
 
   // Helper to login
   async function loginUser(email, password = 'Password123!') {
-    const res = await fetch(`${BASE_URL}/api/auth/login`, {
+    const res = await safeFetch(`${BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),

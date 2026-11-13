@@ -106,7 +106,7 @@ export default function AdminBookingsPage() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by Reference (VIR-...), visitor name, email, or phone..."
+              placeholder="Search by Reference (ANV-...), visitor name, email, or phone..."
               className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-heritage-sandstone/30 focus:outline-none focus:ring-2 focus:ring-heritage-green/20 focus:border-heritage-green font-sans"
             />
           </div>

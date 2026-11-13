@@ -1,8 +1,12 @@
 import mongoose from 'mongoose';
 
+try {
+  process.loadEnvFile('.env.local');
+} catch (e) {}
+
 async function checkMongo() {
   console.log('Connecting to process.env.MONGODB_URI or default...');
-  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/heritageDB';
+  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27018/heritageDB?replicaSet=rs0';
   console.log('URI:', uri);
   try {
     const conn = await mongoose.connect(uri, { serverSelectionTimeoutMS: 3000 });

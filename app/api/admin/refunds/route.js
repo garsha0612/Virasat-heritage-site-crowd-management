@@ -21,6 +21,8 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const search = searchParams.get('search')?.trim();
+    const startDate = searchParams.get('startDate')?.trim();
+    const endDate = searchParams.get('endDate')?.trim();
     const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
     const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '25', 10)));
 
@@ -28,6 +30,18 @@ export async function GET(request) {
 
     if (status && status !== 'ALL') {
       filter.status = status;
+    }
+
+    if (startDate || endDate) {
+      filter.createdAt = {};
+      if (startDate) {
+        filter.createdAt.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        filter.createdAt.$lte = end;
+      }
     }
 
     if (search) {

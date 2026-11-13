@@ -215,7 +215,7 @@ export async function runBookingAudit() {
   assert(createdBooking.totalAmount === 2540, 'SUITE 3.4: Server strictly overwrote client price tampering with official total ₹2540 (includes mausoleum addon)');
   assert(createdBooking.bookingStatus === 'pending', 'SUITE 3.5: Initial booking status is "pending"');
   assert(createdBooking.paymentStatus === 'pending', 'SUITE 3.6: Initial payment status is "pending"');
-  assert(/^VIR-\d{8}-[A-Z0-9]{6}$/.test(createdBooking.bookingReference), 'SUITE 3.7: Booking reference follows format VIR-YYYYMMDD-XXXXXX');
+  assert(/^(?:ANV|VIR)-\d{8}-[A-Z0-9]{6}$/.test(createdBooking.bookingReference), 'SUITE 3.7: Booking reference follows format ANV-YYYYMMDD-XXXXXX');
 
   // Verify atomic reservation in MongoDB
   const updatedSlotInDb = await slotsCollection.findOne({ _id: new mongoose.Types.ObjectId(selectedSlotId) });

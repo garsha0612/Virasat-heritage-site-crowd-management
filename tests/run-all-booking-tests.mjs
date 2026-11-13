@@ -70,9 +70,13 @@ async function main() {
     const adminAuditModule = await import('./admin-e2e-audit.mjs');
     await adminAuditModule.runAdminAudit();
 
+    await new Promise((r) => setTimeout(r, 1000));
+
     // Run Suite 12: Cashfree Sandbox Payment Gateway & Strict RBAC Audit
     const cashfreeRbacModule = await import('./cashfree-sandbox-and-rbac-audit.mjs');
     await cashfreeRbacModule.runCashfreeAndRbacAudit();
+
+    await new Promise((r) => setTimeout(r, 1000));
 
     // Run Suite 13: Admin-Approved Refund Lifecycle & Cashfree Integration Audit
     const refundAuditModule = await import('./refund-lifecycle-audit.mjs');

@@ -18,12 +18,7 @@ export async function middleware(request) {
   const userRole = payload?.role || 'visitor';
 
   function createRedirect(path) {
-    return new NextResponse(null, {
-      status: 307,
-      headers: {
-        Location: `http://127.0.0.1:3000${path}`,
-      },
-    });
+    return NextResponse.redirect(new URL(path, request.url));
   }
 
   // 1. Guard Admin Enclave: /admin, /api/admin/*

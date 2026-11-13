@@ -120,7 +120,7 @@ export async function runConsolidationAudit() {
     assert.strictEqual(data.success, true, 'success: true expected');
     assert.strictEqual(data.data.booking.bookingStatus, 'pending', 'Initial bookingStatus is pending');
     assert.strictEqual(data.data.booking.paymentStatus, 'pending', 'Initial paymentStatus is pending');
-    assert.match(data.data.booking.bookingReference, /^VIR-\d{8}-[A-F0-9]{6}$/, 'Booking reference format correct');
+    assert.match(data.data.booking.bookingReference, /^(?:ANV|VIR)-\d{8}-[A-F0-9]{6}$/, 'Booking reference format correct');
 
     // Inspect database state
     const slotInDb = await slotsCollection.findOne({ _id: slot1Id });

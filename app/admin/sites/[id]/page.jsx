@@ -189,7 +189,7 @@ export default function AdminSiteDetailPage({ params }) {
           <p className="font-serif text-2xl font-bold text-heritage-green">
             {site.demonstrationCapacity?.standardSlotCapacity ?? 200}
           </p>
-          <p className="text-[11px] text-heritage-charcoal-400">Demonstration seats/window</p>
+          <p className="text-[11px] text-heritage-charcoal-400">Standard quota / window</p>
         </div>
       </div>
 

@@ -67,6 +67,20 @@ export async function POST(request) {
       );
     }
 
+    // Webhook Replay Protection: Reject requests where timestamp drift exceeds 300 seconds (5 minutes)
+    const webhookTs = parseInt(timestamp, 10);
+    if (!isNaN(webhookTs)) {
+      const nowSeconds = Math.floor(Date.now() / 1000);
+      const tsInSeconds = webhookTs > 9999999999 ? Math.floor(webhookTs / 1000) : webhookTs;
+      if (Math.abs(nowSeconds - tsInSeconds) > 300) {
+        console.warn(`Webhook rejected: timestamp drift too large (${Math.abs(nowSeconds - tsInSeconds)}s)`);
+        return NextResponse.json(
+          { success: false, message: 'Webhook timestamp expired or replay detected' },
+          { status: 401 }
+        );
+      }
+    }
+
     // 4. Parse and normalize webhook payload
     let webhookData;
     try {
@@ -114,14 +128,27 @@ export async function POST(request) {
             });
             await refundDoc.save();
 
-            await Booking.findByIdAndUpdate(refundDoc.booking, {
-              $set: {
-                paymentStatus: 'refunded',
-                'refund.status': 'REFUNDED',
-                'refund.processedAt': new Date(),
-                'cancellation.refundStatus': 'refund_processed',
-              },
-            });
+            const booking = await Booking.findById(refundDoc.booking);
+            if (booking) {
+              if (!booking.cancellation?.slotRestored && booking.timeSlot?.slotId && booking.totalTickets > 0) {
+                const { releaseSlotCapacity } = await import('@/lib/slots');
+                await releaseSlotCapacity(booking.timeSlot.slotId, booking.totalTickets);
+              }
+              booking.bookingStatus = 'cancelled';
+              booking.paymentStatus = 'refunded';
+              booking.cancellation = {
+                ...(booking.cancellation?.toObject ? booking.cancellation.toObject() : booking.cancellation || {}),
+                cancelledAt: booking.cancellation?.cancelledAt || new Date(),
+                slotRestored: true,
+                refundStatus: 'refund_processed',
+              };
+              booking.refund = {
+                ...(booking.refund?.toObject ? booking.refund.toObject() : booking.refund || {}),
+                status: 'REFUNDED',
+                processedAt: new Date(),
+              };
+              await booking.save();
+            }
             console.log(`✅ Webhook confirmed refund for ${refundDoc.refundId}`);
           } else if (refundStatus === 'FAILED') {
             refundDoc.status = 'FAILED';

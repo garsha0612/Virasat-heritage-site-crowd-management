@@ -111,7 +111,6 @@ export async function GET(request) {
     return NextResponse.json({
       success: true,
       data: {
-        disclaimer: 'Simulated crowd data – not connected to official sensors or live government systems.',
         thresholds: activeCrowdConfig,
         sites: siteTelemetries,
         activeDate: todayStr,

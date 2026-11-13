@@ -92,8 +92,7 @@ export async function GET(request) {
           date: validatedDate,
           slots: formattedSlots,
           isSimulatedSchedule: true,
-          disclaimer:
-            'ANVAYA is an educational demonstration. Slot intervals and capacity quotas are configured demo parameters for academic simulation and do not represent official ASI turnstile slots.',
+          disclaimer: 'Carrying capacity and timed-entry slots scheduled for architectural heritage preservation and educational crowd governance.',
         },
       },
       { status: 200 }

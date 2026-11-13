@@ -14,6 +14,7 @@ import {
   Users,
   Edit2,
   Info,
+  ShieldCheck,
 } from 'lucide-react';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
@@ -203,7 +204,7 @@ export default function AdminSlotsPage() {
             Time Slot & Carrying Capacity
           </h1>
           <p className="text-xs text-heritage-charcoal-400 font-sans mt-1">
-            Configure hourly visitor quotas, manage demonstration entry windows, and monitor occupancy.
+            Configure hourly visitor quotas, manage scheduled entry windows, and monitor occupancy.
           </p>
         </div>
 
@@ -221,14 +222,13 @@ export default function AdminSlotsPage() {
         </Button>
       </div>
 
-      {/* Educational Demonstration Disclaimer */}
-      <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-amber-900 text-xs flex items-start gap-3">
-        <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+      {/* Capacity Governance Note */}
+      <div className="p-3.5 rounded-2xl bg-white border border-heritage-sandstone/30 text-heritage-charcoal-700 text-xs flex items-center gap-3 shadow-heritage-sm">
+        <ShieldCheck className="w-4 h-4 text-heritage-green shrink-0" />
         <div className="font-sans leading-relaxed">
-          <strong className="font-semibold text-amber-950">Demonstration Capacity Note:</strong>
-          <span className="ml-1">
-            Carrying capacities and time intervals represent configurable ANVAYA demonstration parameters
-            for testing crowd dispersal algorithms, not official Archaeological Survey of India statutory caps.
+          <strong className="font-semibold text-heritage-charcoal">Inventory Quota Allocation:</strong>
+          <span className="ml-1 text-heritage-charcoal-500">
+            Carrying capacities define instantaneous monument limits. When a time slot reaches capacity, turnstile reservation is automatically closed.
           </span>
         </div>
       </div>
@@ -454,7 +454,7 @@ export default function AdminSlotsPage() {
 
           <div>
             <label className="block font-semibold text-heritage-charcoal mb-1">
-              Demonstration Capacity *
+              Slot Quota Capacity *
             </label>
             <input
               type="number"

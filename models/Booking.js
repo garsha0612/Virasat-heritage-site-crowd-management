@@ -181,6 +181,7 @@ const BookingSchema = new mongoose.Schema(
     cancellation: {
       cancelledAt: { type: Date, default: null },
       cancellationReason: { type: String, default: null },
+      slotRestored: { type: Boolean, default: false },
       refundAmount: { type: Number, default: 0 },
       refundStatus: {
         type: String,

@@ -64,7 +64,7 @@ export default function PaymentPage({ params }) {
         const b = data.data.booking;
 
         // Already paid → go straight to confirmation
-        if (b.paymentStatus === 'completed' && b.bookingStatus === 'confirmed') {
+        if (['completed', 'paid'].includes(b.paymentStatus) && b.bookingStatus === 'confirmed') {
           router.replace(`/booking/confirmation/${b.bookingReference}`);
           return;
         }

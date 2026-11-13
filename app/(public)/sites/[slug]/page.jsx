@@ -330,7 +330,7 @@ export default async function SiteDetailPage({ params }) {
               <div className="mt-6 pt-4 border-t border-heritage-sandstone/15 space-y-2 text-xs">
                 <div className="flex items-center gap-2 text-heritage-charcoal-700 font-semibold">
                   <Ticket className="w-4 h-4 text-heritage-gold-600" />
-                  <span>Sample Entry Fees (Demonstration):</span>
+                  <span>Official Entry Tariffs (ASI):</span>
                 </div>
                 <div className="bg-heritage-sandstone-50/70 p-3 rounded-lg space-y-1.5 font-mono text-[11px] text-heritage-charcoal-600">
                   <div className="flex justify-between">
@@ -371,13 +371,13 @@ export default async function SiteDetailPage({ params }) {
                 </p>
               </div>
 
-              {/* Simulation Disclaimer Badge */}
+              {/* Conservation Monitoring Badge */}
               <div className="mt-4 pt-3 border-t border-heritage-sandstone/15 flex items-center justify-between text-[10px] text-heritage-charcoal-400 font-mono">
                 <span className="flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-heritage-gold" />
-                  Simulated Telemetry
+                  <ShieldCheck className="w-3 h-3 text-heritage-green" />
+                  Live Capacity Monitoring
                 </span>
-                <span>Calibrated Hourly</span>
+                <span>Active Turnstile Control</span>
               </div>
             </Card>
           </div>

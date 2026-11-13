@@ -48,6 +48,8 @@ export default function AdminRefundsPage() {
   // Search & Filter
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   // Detail Modal State
   const [selectedRefund, setSelectedRefund] = useState(null);
@@ -65,6 +67,8 @@ export default function AdminRefundsPage() {
       params.set('limit', String(pagination.limit));
       if (statusFilter !== 'ALL') params.set('status', statusFilter);
       if (search) params.set('search', search);
+      if (startDate) params.set('startDate', startDate);
+      if (endDate) params.set('endDate', endDate);
 
       const res = await fetch(`/api/admin/refunds?${params.toString()}`);
       const json = await res.json();
@@ -248,19 +252,39 @@ export default function AdminRefundsPage() {
 
       {/* Filter and Search Bar */}
       <div className="bg-white rounded-2xl border border-heritage-sandstone/30 p-4 shadow-heritage-sm space-y-4">
-        <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-3">
+        <form onSubmit={handleSearchSubmit} className="flex flex-col lg:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-heritage-sandstone-400" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by Booking Reference (VIR-...) or Refund ID (REF-...)"
+              placeholder="Search by Booking Reference (ANV-...) or Refund ID (REF-...)"
               className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-heritage-sandstone/40 bg-heritage-ivory/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-heritage-sandstone text-heritage-charcoal font-mono placeholder:font-sans"
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1.5 text-xs text-heritage-charcoal-500">
+              <span className="text-[11px] font-medium">From:</span>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="px-2.5 py-1.5 text-xs rounded-xl border border-heritage-sandstone/40 bg-white text-heritage-charcoal font-mono"
+              />
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs text-heritage-charcoal-500">
+              <span className="text-[11px] font-medium">To:</span>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="px-2.5 py-1.5 text-xs rounded-xl border border-heritage-sandstone/40 bg-white text-heritage-charcoal font-mono"
+              />
+            </div>
+
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -277,8 +301,25 @@ export default function AdminRefundsPage() {
             </select>
 
             <Button type="submit" variant="primary" size="sm">
-              Search
+              Search / Filter
             </Button>
+            {(startDate || endDate || search) && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSearch('');
+                  setStartDate('');
+                  setEndDate('');
+                  setStatusFilter('ALL');
+                  setTimeout(() => fetchRefunds(1), 50);
+                }}
+                className="text-xs text-heritage-charcoal-500"
+              >
+                Clear
+              </Button>
+            )}
           </div>
         </form>
       </div>
@@ -503,7 +544,13 @@ export default function AdminRefundsPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleStatusTransition('reject', { reason: adminNote })}
+                    onClick={() => {
+                      if (!adminNote.trim()) {
+                        setActionError('Mandatory requirement: Please enter an administrative reason in the note field above before rejecting.');
+                        return;
+                      }
+                      handleStatusTransition('reject', { reason: adminNote });
+                    }}
                     disabled={processingAction}
                     className="text-red-700 border-red-200 hover:bg-red-50"
                   >

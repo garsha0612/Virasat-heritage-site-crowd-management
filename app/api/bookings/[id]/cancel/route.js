@@ -95,6 +95,7 @@ export async function POST(request, { params }) {
                 cancelledAt: new Date(),
                 reason,
                 cancellationReason: reason,
+                slotRestored: true,
                 refundAmount: simulatedRefundAmount,
                 refundStatus: isPaid ? 'simulated_refund_processed' : 'none',
               },

@@ -77,10 +77,13 @@ export async function POST(request, { params }) {
         refund.booking,
         {
           $set: {
+            bookingStatus: 'confirmed',
             'refund.status': 'REJECTED',
             'refund.adminNote': reason,
             'refund.reviewedAt': new Date(),
             'cancellation.refundStatus': 'refund_rejected',
+            'cancellation.cancelledAt': null,
+            'cancellation.slotRestored': false,
           },
         },
         { session: dbSession }

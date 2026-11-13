@@ -98,15 +98,10 @@ export async function POST(request, { params }) {
     const randomHex = crypto.randomBytes(3).toString('hex').toUpperCase();
     const refundId = `REF-${dateStr}-${randomHex}`;
 
-    // Execute atomic refund registration and slot release in a single transaction
+    // Execute atomic refund registration in a single transaction
+    // Booking status remains 'confirmed' while under review; slot capacity is NOT released until admin approves.
     const result = await withDatabaseTransaction(async (dbSession) => {
-      // 1. If booking was confirmed, mark cancelled and restore slot capacity
-      const wasConfirmed = booking.bookingStatus === 'confirmed';
-      if (wasConfirmed && booking.timeSlot?.slotId && booking.totalTickets > 0) {
-        await releaseSlotCapacity(booking.timeSlot.slotId, booking.totalTickets, dbSession);
-      }
-
-      // 2. Create official Refund tracking entity
+      // 1. Create official Refund tracking entity
       const newRefund = new Refund({
         refundId,
         booking: booking._id,
@@ -135,12 +130,12 @@ export async function POST(request, { params }) {
 
       await newRefund.save({ session: dbSession });
 
-      // 3. Atomically update Booking
-      booking.bookingStatus = 'cancelled';
+      // 2. Atomically update Booking: keep bookingStatus confirmed while under review
       booking.cancellation = {
-        cancelledAt: booking.cancellation?.cancelledAt || new Date(),
+        cancelledAt: null,
         cancellationReason: reason,
         reason,
+        slotRestored: false,
         refundAmount: booking.totalAmount,
         refundStatus: 'refund_requested',
       };
