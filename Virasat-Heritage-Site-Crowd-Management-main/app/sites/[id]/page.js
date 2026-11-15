@@ -2,9 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITES, HOURS, SLOTS, level } from "../../../lib/data";
 export function generateStaticParams() { return SITES.map((s) => ({ id: s.id })); }
-export function generateMetadata({ params }) { const s = SITES.find((x) => x.id === params.id); return { title: s ? `${s.name} — Virasat` : "Not found" }; }
-export default function SitePage({ params }) {
-  const s = SITES.find((x) => x.id === params.id);
+export async function generateMetadata({ params }) { const { id } = await params; const s = SITES.find((x) => x.id === id); return { title: s ? `${s.name} — Virasat` : "Not found" }; }
+export default async function SitePage({ params }) {
+  const { id } = await params;
+  const s = SITES.find((x) => x.id === id);
   if (!s) notFound();
   const best = HOURS[s.crowd.indexOf(Math.min(...s.crowd))], worst = HOURS[s.crowd.indexOf(Math.max(...s.crowd))];
   return (
